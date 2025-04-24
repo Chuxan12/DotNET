@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить аниме - АнимеСайт</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* CSS стили остаются без изменений */
+        .container {
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 97%;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+        }
+
+        .submit-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">АнимеСайт</div>
+        <div class="search-container">
+            <form id="searchForm" onsubmit="return handleSearch(event);">
+                <input type="text" class="search-input" placeholder="Найти аниме по названию..." id="searchInput" required>
+                <button type="submit" class="search-button">🔍</button>
+            </form>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="top100.html">Топ-100 аниме</a></li>
+                <li><a href="profile.html"><img src="img/avatar.jpg" alt="Аватар" class="avatar"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <p><strong>Добавить аниме</strong></p>
+            <div class="form-group">
+                <label for="title">Название аниме:</label>
+                <input type="text" id="title" placeholder="Введите название аниме..." required>
+                <div class="error" id="title-error">Название должно быть от 1 до 100 символов.</div>
+            </div>
+            <div class="form-group">
+                <label for="rating">Оценка:</label>
+                <input type="number" id="rating" min="0" max="10" step="0.1" placeholder="Введите число от 0 до 10..." required>
+                <div class="error" id="rating-error">Оценка должна быть от 0 до 10.</div>
+            </div>
+            <div class="form-group">
+                <label for="type">Тип:</label>
+                <select id="type" required>
+                    <option value="TV">TV</option>
+                    <option value="Movie">Фильм</option>
+                    <option value="OVA">OVA</option>
+                    <option value="Special">Специальный</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status">Статус:</label>
+                <select id="status" required>
+                    <option value="Завершено">Завершено</option>
+                    <option value="В процессе">В процессе</option>
+                    <option value="Анонсировано">Анонсировано</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="genre">Жанр:</label>
+                <select id="genre" required>
+                    <option value="Драма">Драма</option>
+                    <option value="Экшен">Экшен</option>
+                    <option value="Комедия">Комедия</option>
+                    <option value="Фэнтези">Фэнтези</option>
+                </select>
+                <div class="error" id="genre-error">Жанр обязателен для выбора.</div>
+            </div>
+            <div class="form-group">
+                <label for="releaseDate">Дата выхода:</label>
+                <input type="date" id="releaseDate" required>
+                <div class="error" id="release-date-error">Дата выхода обязательна.</div>
+            </div>
+            <div class="form-group">
+                <label for="studio">Студия:</label>
+                <input type="text" id="studio" placeholder="Введите название студии..." required>
+                <div class="error" id="studio-error">Студия обязательна для заполнения.</div>
+            </div>
+            <div class="form-group">
+                <label for="description">Описание:</label>
+                <textarea id="description" rows="4" placeholder="Заполните описание, не менее 20 букв..." required></textarea>
+                <div class="error" id="description-error">Описание должно содержать минимум 20 символов.</div>
+            </div>
+            <div class="form-group">
+                <label for="photo">Фотография:</label>
+                <input type="file" id="photo" accept="image/*" required>
+                <div class="error" id="photo-error">Пожалуйста, загрузите изображение в формате JPG, PNG или GIF.</div>
+            </div>
+            <button id="submit-button" class="submit-button">Добавить аниме</button>
+        </div>
+    </main>
+    <footer>
+        <div>
+            <p>&copy; 2024 АнимеСайт</p>
+            <p>
+                <a href="https://t.me" style="color: white; text-decoration: none;">Наш канал в Telegram</a> | 
+                <a href="about.html" style="color: white; text-decoration: none;">О нас</a> | 
+                <a href="add_anime.html" style="color: white; text-decoration: none;">Добавить аниме</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("submit-button").addEventListener("click", function () {
+            let isValid = true;
+            document.querySelectorAll('.error').forEach(function(el) {
+                el.style.display = "none";
+            });
+
+            const titleField = document.getElementById("title");
+            const titleError = document.getElementById("title-error");
+            if (titleField.value.length < 1 || titleField.value.length > 100) {
+                titleError.style.display = "block";
+                isValid = false;
+            }
+
+            const ratingField = document.getElementById("rating");
+            const ratingError = document.getElementById("rating-error");
+            if (ratingField.value.trim() === '') {
+                ratingError.innerText = "Оценка обязательна для заполнения.";
+                ratingError.style.display = "block";
+                isValid = false;
+            } else if (ratingField.value < 0 || ratingField.value > 10) {
+                ratingError.innerText = "Оценка должна быть от 0 до 10.";
+                ratingError.style.display = "block";
+                isValid = false;
+            }
+
+            const genreField = document.getElementById("genre");
+            const genreError = document.getElementById("genre-error");
+            if (genreField.value.trim() === '') {
+                genreError.style.display = "block";
+                isValid = false;
+            }
+
+            const releaseDateField = document.getElementById("releaseDate");
+            const releaseDateError = document.getElementById("release-date-error");
+            if (releaseDateField.value.trim() === '') {
+                releaseDateError.style.display = "block";
+                isValid = false;
+            } else {
+                const releaseDate = new Date(releaseDateField.value);
+                if (releaseDate.getFullYear() <= 1900) {
+                    releaseDateError.innerText = "Дата выхода должна быть позже 1900 года.";
+                    releaseDateError.style.display = "block";
+                    isValid = false;
+                }
+            }
+
+            const studioField = document.getElementById("studio");
+            const studioError = document.getElementById("studio-error");
+            if (studioField.value.trim() === '') {
+                studioError.style.display = "block";
+                isValid = false;
+            }
+
+            const descriptionField = document.getElementById("description");
+            const descriptionError = document.getElementById("description-error");
+            const descriptionText = descriptionField.value;
+
+            const letterCount = (descriptionText.match(/[a-zA-Zа-яА-Я]/g) || []).length;
+            if (letterCount < 20) {
+                descriptionError.innerText = "Описание должно содержать хотя бы 20 букв.";
+                descriptionError.style.display = "block";
+                isValid = false;
+            }
+
+            const photoField = document.getElementById("photo");
+            const photoError = document.getElementById("photo-error");
+            const file = photoField.files[0];
+
+            if (!file) {
+                photoError.style.display = "block";
+                isValid = false;
+            } else {
+                const fileType = file.type;
+                const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+                if (!validImageTypes.includes(fileType)) {
+                    photoError.style.display = "block";
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                alert("Аниме успешно добавлено!");
+                document.querySelectorAll('input, textarea, select').forEach(function(el) {
+                    el.value = '';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

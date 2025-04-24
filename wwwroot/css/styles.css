@@ -1,0 +1,694 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    flex: 1;
+}
+
+nav {
+    flex: 1;
+    align-items: center;
+    vertical-align: middle;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    vertical-align: middle;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.carousel-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-item {
+    position: relative;
+    min-width: 200px;
+    margin: 0 10px;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.carousel-button {
+    background-color: #666;
+    color: white;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    z-index: 1;
+    opacity: 0.2;
+    transition: opacity 0.5s;
+}
+
+.carousel-button:hover {
+    opacity: 0.5;
+}
+
+.carousel-button.prev {
+    left: 0;
+}
+
+.carousel-button.next {
+    right: 0;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.latest-anime {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.anime-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    flex: 0 1 200px;
+    cursor: pointer;
+}
+
+.anime-item img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.anime-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.anime-item h3 {
+    margin: 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.anime-item p {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.genre {
+    color: #666;
+}
+
+.genre-info {
+    font-size: 14px;
+    color: #ff0000;
+    margin: 5px 0;
+}
+
+.genre:hover {
+    text-decoration: underline;
+}
+
+.date, .episode {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.other-genre {
+    color: #666;
+}
+
+.search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    margin-bottom: 5px;
+}
+
+.filter-button {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background-color: #218838;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #f1f1f1;
+    color: black;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    min-width: 170px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.filter-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-title {
+    margin: 0;
+    padding-bottom: 10px;
+    color: #333;
+}
+
+.anime-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#results {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.anime-results {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.result-title {
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 0;
+    flex: 1;
+}
+
+.search-button {
+    padding: 10px 15px;
+    border: none;
+    background-color: white;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.search-button:hover {
+    color: white;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+}
+
+.anime-results {
+    flex: 1;
+    padding: 20px;
+}
+
+.navbar {
+    width: 200px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.star {
+    color: gold;
+    margin-right: 5px;
+}
+
+.score {
+    font-weight: bold;
+}
+
+.anime-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.anime-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.anime-table td {
+    padding: 10px;
+    vertical-align: top;
+    width: 20%;
+}
+
+.top100 {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-info {
+    flex-grow: 1;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-table td {
+    padding: 10px;
+    border: none;
+    text-align: left;
+    font-size: 1em;
+    color: #333;
+    font-weight: bold; 
+}
+
+.activity {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+#scrollToTopBtn {
+    background-color: #666;
+    color: white; 
+    border: none; 
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+#scrollToTopBtn:hover {
+    background-color: #666;
+}
+.about-me {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+.anime-news {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.news-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    width: 80%;
+    max-width: 600px;
+}
+
+.news-item h3 {
+    margin: 0 0 10px;
+}
+
+.news-item p {
+    margin: 0 0 10px;
+}
+
+.read-more {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: calc(100% - 2px);
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    z-index: 1000;
+}
+.autocomplete-suggestions li {
+    padding: 8px;
+    cursor: pointer;
+}
+.autocomplete-suggestions li:hover {
+    background-color: #f0f0f0;
+}
+/* ========================
+   HEADER & SEARCH-STYLES
+   ======================== */
+   .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #1a1a1a;
+    color: #fff;
+    position: relative;
+    z-index: 100;
+  }
+  
+  /* Logo */
+  .logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+  
+  /* Search */
+  .search-container {
+    position: relative;
+    width: 320px;
+  }
+  
+  .search-form {
+    display: flex;
+    width: 100%;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: none;
+  }
+  
+  .search-input:focus {
+    outline: none;
+  }
+  
+  .search-button {
+    background: #ff6f61;
+    border: none;
+    color: #fff;
+    padding: 0 1rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.2s ease;
+  }
+  
+  .search-button:hover {
+    background: #e65b50;
+  }
+  
+  /* Autocomplete suggestions */
+  .autocomplete-suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-height: 240px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: visibility 0s ease 0.2s, opacity 0.2s ease, transform 0.2s ease;
+  }
+  
+/* Контейнер поиска */
+.search-container {
+    position: relative;
+    width: 320px;
+    margin: 0 auto;
+  }
+  
+  /* Скрываем подсказки по умолчанию */
+  .autocomplete-suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    display: none;               /* Скрыто */
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-height: 240px;
+    overflow-y: auto;
+    z-index: 10;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Показываем подсказки, когда фокус внутри .search-container */
+  .search-container:focus-within .autocomplete-suggestions {
+    display: block;              /* Показываем */
+  }
+  
+  /* Стили для элементов списка подсказок */
+  .autocomplete-suggestions li {
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .autocomplete-suggestions li:hover,
+  .autocomplete-suggestions li:focus {
+    background: #f5f5f5;
+  }
+  
+  /* Подсветка активного (клавиатурный) */
+  .autocomplete-suggestions li[aria-selected="true"] {
+    background: #e0e0e0;
+  }
+  
+  /* Обновим кнопку поиска, чтобы она была над списком при необходимости */
+  .search-button {
+    position: relative;
+    z-index: 20;
+  }
+  .autocomplete-suggestions {
+    display: block;   /* всегда рендерится, JS управляет видимостью */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .autocomplete-suggestions.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+  /* 1. Разрешаем “витание” дочерних элементов за пределы header */
+header.site-header {
+    position: relative;   /* уже должно быть */
+    overflow: visible;    /* ← важно! */
+  }
+  
+  /* 2. То же для контейнера поиска, если нужно */
+  .search-container {
+    position: relative;   /* уже есть */
+    overflow: visible;    /* ← чтобы подсказки могли вылезать наружу */
+  }
+  
+  /* 3. Подсказки — абсолютные и поверх всего */
+  .autocomplete-suggestions {
+    position: absolute;   /* учитывает .search-container */
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-height: 240px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: none;        /* показываем через JS-класс .visible */
+    z-index: 999;         /* чтобы быть поверх header */
+  }
+  
+  /* 4. Класс для показа подсказок */
+  .autocomplete-suggestions.visible {
+    display: block;
+  }
+  .autocomplete-suggestions li {
+    color: #000;
+  }
+  .add-to-cart {
+    background: #28a745;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .add-to-cart:hover {
+    background: #218838;
+  }
+  .counter {
+    background: #ff4757;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+  

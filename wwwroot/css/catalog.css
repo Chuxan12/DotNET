@@ -1,0 +1,325 @@
+/* Основной макет */
+.catalog {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 85px;
+    max-width: 100%;
+}
+
+/* Поиск */
+.sidebar-search-container {
+    margin-bottom: 15px;
+}
+
+.sidebar-search {        
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #888888;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Категории фильтров */
+.sidebar-filter-category {
+    margin-bottom: 20px;
+}
+
+.sidebar-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.sidebar-list {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.sidebar-list input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+.sidebar-number-input {
+    width: 100px;
+    padding: 5px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Кнопка применения фильтров */
+.sidebar-submit {
+    width: 100%;
+    padding: 10px;
+    background: #1185d7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.sidebar-submit:hover {
+    background: #0f6bbf;
+}
+
+/* Стили для каталога товаров */
+.catalog-Anime {
+    padding-right: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: left;
+    padding: 20px;
+}
+
+/* Стили для карточек товаров */
+.Anime-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 3px solid #f4f4f4;
+    width: calc(25% - 20px); /* 4 товара в ряд, с отступами */
+    text-align: center;
+    box-shadow: none; /* Убрали тень */
+}
+
+.Anime-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.Anime-item p {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+
+
+/* Кнопка добавления в корзину */
+.add-to-cart {
+    background-color: #1185d7;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Основной контейнер каталога */
+.catalog-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+    overflow: auto;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: calc(100vh - 120px); /* Высота экрана минус высота шапки и отступы */
+}
+
+/* Стили для блока фильтров (левая колонка) */
+.catalog-sidebar {
+    width: 250px;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    position: relative;
+}
+
+/* Блок для карточек товаров */
+.catalog-content {
+    max-width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Каталог товаров */
+.catalog-Anime {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+/* Контейнер для пагинации */
+.pagination {
+    margin-top: auto;
+    bottom: 20px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    z-index: 10;
+}
+
+/* Кнопки пагинации */
+.page-btn {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 12px 18px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Убираем стиль ссылок на карточках товаров */
+.catalog-Anime .Anime-link {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: inherit; /* Наследуем цвет родителя (к примеру, черный или тот, который вам нужен) */
+}
+
+/* Дополнительно можно убрать фиолетовый цвет при наведении */
+.catalog-Anime .Anime-link:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Сообщение о пустом результате */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    width: 100%;
+}
+
+    .no-results img {
+        width: 150px;
+        opacity: 0.7;
+        margin-bottom: 20px;
+    }
+
+    .no-results p {
+        font-size: 1.2rem;
+        color: #666;
+        margin: 10px 0;
+    }
+
+    .no-results button {
+        padding: 10px 25px;
+        background: #4299e1;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s;
+    }
+
+        .no-results button:hover {
+            background: #3182ce;
+        }
+
+/* Адаптивность для сообщения */
+@media (max-width: 768px) {
+    .no-results {
+        padding: 20px;
+    }
+
+        .no-results img {
+            width: 100px;
+        }
+}
+
+.Anime-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.details-link {
+    color: #4299e1;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+    border: 1px solid #4299e1;
+    border-radius: 4px;
+    padding: 6px 12px;
+}
+
+.details-link:hover {
+    color: #3182ce;
+    border-color: #3182ce;
+    background: rgba(66, 153, 225, 0.05);
+}
+
+/* Для мобильной версии */
+@media (max-width: 480px) {
+    .Anime-actions {
+        flex-direction: column;
+    }
+    
+    .details-link {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.autocomplete-suggestions {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    width: calc(100% - 20px);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 5px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .suggestion-item:hover {
+        background-color: #f8f9fa;
+    }
+
+.suggestion-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.suggestion-price {
+    color: #1185d7;
+    font-size: 0.9em;
+    margin-left: 15px;
+}

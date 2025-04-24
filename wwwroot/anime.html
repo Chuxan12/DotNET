@@ -1,0 +1,189 @@
+<!-- anime.html — страница конкретного тайтла -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка… | АнимеСайт</title>
+
+    <!-- ваш общий CSS-файл  -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- локальные стили (по минимуму) -->
+    <style>
+        .anime-wrapper   {display:flex;flex-wrap:wrap;gap:20px;background:#fff;padding:20px;max-width:1200px;margin:auto}
+        .anime-img       {width:300px;flex-shrink:0;border-radius:8px;object-fit:cover}
+        .anime-meta h1   {font-size:32px;margin:0 0 10px}
+        .anime-meta .rating{color:#FFD700;font-size:2em;margin-bottom:10px}
+        .anime-meta p    {margin:4px 0;font-size:16px}
+        .description     {background:#fff;border-radius:10px;padding:20px;max-width:1200px;margin:25px auto}
+        .add-to-cart     {margin-top:20px;padding:12px 20px;background:#007BFF;color:#fff;border:none;border-radius:6px;cursor:pointer}
+        .add-to-cart:hover{background:#0056b3}
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="logo">АнимеСайт</div>
+  
+        <div class="search-container" role="search">
+          <form id="searchForm" class="search-form" autocomplete="off" aria-label="Поиск аниме">
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Найти аниме по названию..."
+              aria-autocomplete="list"
+              aria-controls="suggestions"
+              aria-expanded="false"
+            />
+            <button type="submit" class="search-button" aria-label="Найти">🔍</button>
+          </form>
+          <ul id="suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Подсказки поиска"></ul>
+        </div>
+  
+        <nav class="main-nav" aria-label="Главное меню">
+          <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="top100.html">Топ-100 аниме</a></li>
+            <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
+            <li>
+              <a href="profile.html" aria-label="Профиль">
+                <img src="img/avatar.jpg" alt="" class="avatar" />
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+<main>
+    <!-- Контейнер для данных тайтла -->
+    <section id="animeSection">
+        <p style="text-align:center">Загрузка…</p>
+    </section>
+
+    <!-- Описание выводим отдельно, чтобы можно было свернуть/развернуть при желании -->
+    <section id="descriptionSection" class="description" hidden>
+        <h2>Описание сюжета</h2>
+        <p id="animeDescription"></p>
+    </section>
+</main>
+
+<footer>
+    <div>
+        <p>&copy; 2024 АнимеСайт.</p>
+        <p>
+          <a href="https://t.me" style="color: white; text-decoration: none;">Наш канал в Telegram</a> |
+          <a href="about.html" style="color: white; text-decoration: none;">О нас</a> |
+          <a href="add-item.html" style="color: white; text-decoration: none;">Добавить аниме</a>
+        </p>
+    </div>
+</footer>
+
+<script type="module">
+    /* общий модуль избранного --------------------------------- */
+    import { getFavSet, saveFavSet, updateFavCounter } from './js/fav-storage.js';
+    
+    /* -------------------- вспомогательные функции -------------------- */
+    function qs(name, url = window.location.href) {
+      name = name.replace(/[\\[\\]]/g, '\\$&');
+      const m = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)').exec(url);
+      return m && m[2] ? decodeURIComponent(m[2].replace(/\\+/g, ' ')) : null;
+    }
+    
+    /* -------------------- загрузка данных тайтла -------------------- */
+    (async function init() {
+      const id = qs('id');
+      if (!id) {
+        document.getElementById('animeSection').innerHTML = '<p>Не указан ID аниме.</p>';
+        return;
+      }
+      try {
+        const res = await fetch(`/api/anime/${id}`);
+        if (!res.ok) throw new Error('Ошибка ' + res.status);
+        const a = await res.json();
+    
+        document.title = a.title + ' | АнимеСайт';
+        renderAnime(a);
+    
+        /* выводим начальное значение счётчика из localStorage */
+        updateFavCounter();
+    
+        /* дополнительно синхронизируемся с сервером, если он ведёт свою корзину */
+        syncWithServerCount();
+      } catch (err) {
+        document.getElementById('animeSection').innerHTML = `<p>${err.message}</p>`;
+      }
+    })();
+    
+    /* ---------- рендер аниме ---------- */
+    function renderAnime(a) {
+      const section = document.getElementById('animeSection');
+      section.innerHTML = `
+        <div class="anime-wrapper">
+          <img src="${a.imagePath}" alt="${a.title}" class="anime-img">
+          <div class="anime-meta">
+            <h1>${a.title}</h1>
+            <div class="rating">⭐ ${a.rating}</div>
+            <p><strong>Тип:</strong> ${a.type}</p>
+            <p><strong>Эпизоды:</strong> ${a.episodes}</p>
+            <p><strong>Статус:</strong> ${a.status}</p>
+            <p><strong>Жанры:</strong> ${a.genres.join(' / ')}</p>
+            <p><strong>Студия:</strong> ${a.studio}</p>
+            <p><strong>Год:</strong> ${a.year}</p>
+            <button class="add-to-cart" data-anime-id="${a.id}">
+              Добавить в избранное
+            </button>
+          </div>
+        </div>`;
+    
+      if (a.description) {
+        document.getElementById('descriptionSection').hidden = false;
+        document.getElementById('animeDescription').textContent = a.description;
+      }
+    }
+    
+    /* -------------------- обработчики -------------------- */
+    document.body.addEventListener('click', e => {
+      /* добавление в избранное */
+      if (!e.target.matches('.add-to-cart')) return;
+    
+      const id = +e.target.dataset.animeId;
+    
+      fetch('/api/cart/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ animeId: id })
+      })
+      .then(r => r.ok ? r.json() : r.text().then(t => Promise.reject(t)))
+      .then(data => {
+        /* сервер вернул актуальное количество – рисуем его */
+        updateFavCounter(data.totalItems);
+    
+        /* кладём ID в localStorage, чтобы страница избранного увидела то же */
+        const set = getFavSet();
+        set.add(id);
+        saveFavSet(set);
+      })
+      .catch(err => alert(err));
+    });
+    
+    /* ---------- поиск по сайту ---------- */
+    document.getElementById('searchForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const term = document.getElementById('searchInput').value.trim();
+      if (term) location.href = `catalog.html?search=${encodeURIComponent(term)}`;
+    });
+    
+    /* ---------- синхронизация при открытии страницы ---------- */
+    function syncWithServerCount() {
+      fetch('/api/cart/count', { credentials: 'include' })
+        .then(r => r.ok ? r.json() : { totalItems: 0 })
+        .then(d => updateFavCounter(d.totalItems))
+        .catch(() => updateFavCounter());
+    }
+    </script>
+</body>
+</html>
