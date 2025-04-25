@@ -15,7 +15,7 @@
             margin: auto;
             position: relative;
         }
-        
+
         h1 {
             text-align: center;
         }
@@ -62,221 +62,226 @@
     </style>
 </head>
 <body>
-    <header class="site-header">
-      <div class="logo">АнимеСайт</div>
+<header class="site-header">
+    <div class="logo">АнимеСайт</div>
 
-      <div class="search-container" role="search">
+    <div class="search-container" role="search">
         <form id="searchForm" class="search-form" autocomplete="off" aria-label="Поиск аниме">
-          <input
-            type="text"
-            id="searchInput"
-            class="search-input"
-            placeholder="Найти аниме по названию..."
-            aria-autocomplete="list"
-            aria-controls="suggestions"
-            aria-expanded="false"
-          />
-          <button type="submit" class="search-button" aria-label="Найти">🔍</button>
+            <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Найти аниме по названию..."
+                    aria-autocomplete="list"
+                    aria-controls="suggestions"
+                    aria-expanded="false"
+            />
+            <button type="submit" class="search-button" aria-label="Найти">🔍</button>
         </form>
         <ul id="suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Подсказки поиска"></ul>
-      </div>
+    </div>
 
-      <nav class="main-nav" aria-label="Главное меню">
+    <nav class="main-nav" aria-label="Главное меню">
         <ul>
-          <li><a href="index.html">Главная</a></li>
-          <li><a href="catalog.html">Каталог</a></li>
-          <li><a href="top100.html">Топ-100 аниме</a></li>
-          <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
-          <li>
-            <a href="profile.html" aria-label="Профиль">
-              <img src="img/avatar.jpg" alt="" class="avatar" />
-            </a>
-          </li>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="top100.html">Топ-100 аниме</a></li>
+            <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
+            <li>
+                <a href="profile.html" aria-label="Профиль">
+                    <img src="img/avatar.jpg" alt="" class="avatar"/>
+                </a>
+            </li>
         </ul>
-      </nav>
-    </header>
-    <main>
-        <div class="container">
-            <p><strong>Добавить аниме</strong></p>
-            <div class="form-group">
-                <label for="title">Название аниме:</label>
-                <input type="text" id="title" placeholder="Введите название аниме..." required>
-                <div class="error" id="title-error">Название должно быть от 1 до 100 символов.</div>
-            </div>
-            <div class="form-group">
-                <label for="rating">Оценка:</label>
-                <input type="number" id="rating" min="0" max="10" step="0.1" placeholder="Введите число от 0 до 10..." required>
-                <div class="error" id="rating-error">Оценка должна быть от 0 до 10.</div>
-            </div>
-            <div class="form-group">
-                <label for="type">Тип:</label>
-                <select id="type" required>
-                  <option value="TV">TV-сериал</option>
-                  <option value="Movie">Фильм</option>
-                  <option value="OVA">OVA</option>
-                  <option value="ONA">ONA</option>
-                  <option value="Special">Спецвыпуск</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="status">Статус:</label>
-                <select id="status" required>
-                  <option value="Finished">Завершено</option>     <!-- Finished -->
-                  <option value="Airing">В процессе</option>      <!-- Airing   -->
-                  <option value="Upcoming">Анонсировано</option>  <!-- Upcoming -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="genres">Жанры (зажмите Ctrl/Cmd для множественного выбора):</label>
-                <select id="genres" multiple size="4" required>
-                  <option value="Экшен">Экшен</option>
-                  <option value="Триллер">Триллер</option>
-                  <option value="Фэнтези">Фэнтези</option>
-                  <option value="Приключения">Приключения</option>
-                  <option value="Драма">Драма</option>
-                  <option value="Исекай">Исекай</option>
-                  <option value="Фэнтези">Фэнтези</option>
-                  <option value="Комедия">Комедия</option>
-                  <option value="Сенен">Сенен</option>
-                  <!-- добавьте остальные жанры -->
-                </select>
-                <div class="error" id="genre-error">Выберите хотя бы один жанр.</div>
-              </div>
-            <div class="form-group">
-                <label for="releaseDate">Дата выхода:</label>
-                <input type="date" id="releaseDate" required>
-                <div class="error" id="release-date-error">Дата выхода обязательна.</div>
-            </div>
-            <div class="form-group">
-                <label for="studio">Студия:</label>
-                <input type="text" id="studio" placeholder="Введите название студии..." required>
-                <div class="error" id="studio-error">Студия обязательна для заполнения.</div>
-            </div>
-            <div class="form-group">
-                <label for="description">Описание:</label>
-                <textarea id="description" rows="4" placeholder="Заполните описание, не менее 20 букв..." required></textarea>
-                <div class="error" id="description-error">Описание должно содержать минимум 20 символов.</div>
-            </div>
-            <div class="form-group">
-                <label for="imageUrl">URL изображения (JPG/PNG/GIF):</label>
-                <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" required>
-                <div class="error" id="image-error">Укажите корректный URL изображения.</div>
-              </div>
-            <button id="submit-button" class="submit-button">Добавить аниме</button>
+    </nav>
+</header>
+<main>
+    <div class="container">
+        <p><strong>Добавить аниме</strong></p>
+        <div class="form-group">
+            <label for="title">Название аниме:</label>
+            <input type="text" id="title" placeholder="Введите название аниме..." required>
+            <div class="error" id="title-error">Название должно быть от 1 до 100 символов.</div>
         </div>
-    </main>
-    <footer>
-        <div>
-            <p>&copy; 2024 АнимеСайт.</p>
-            <p>
-              <a href="https://t.me" style="color: white; text-decoration: none;">Наш канал в Telegram</a> |
-              <a href="about.html" style="color: white; text-decoration: none;">О нас</a> |
-              <a href="add-item.html" style="color: white; text-decoration: none;">Добавить аниме</a>
-            </p>
+        <div class="form-group">
+            <label for="rating">Оценка:</label>
+            <input type="number" id="rating" min="0" max="10" step="0.1" placeholder="Введите число от 0 до 10..."
+                   required>
+            <div class="error" id="rating-error">Оценка должна быть от 0 до 10.</div>
         </div>
-    </footer>
+        <div class="form-group">
+            <label for="type">Тип:</label>
+            <select id="type" required>
+                <option value="TV">TV-сериал</option>
+                <option value="Movie">Фильм</option>
+                <option value="OVA">OVA</option>
+                <option value="ONA">ONA</option>
+                <option value="Special">Спецвыпуск</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status">Статус:</label>
+            <select id="status" required>
+                <option value="Finished">Завершено</option>     <!-- Finished -->
+                <option value="Airing">В процессе</option>      <!-- Airing   -->
+                <option value="Upcoming">Анонсировано</option>  <!-- Upcoming -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="genres">Жанры (зажмите Ctrl/Cmd для множественного выбора):</label>
+            <select id="genres" multiple size="4" required>
+                <option value="Экшен">Экшен</option>
+                <option value="Триллер">Триллер</option>
+                <option value="Фэнтези">Фэнтези</option>
+                <option value="Приключения">Приключения</option>
+                <option value="Драма">Драма</option>
+                <option value="Исекай">Исекай</option>
+                <option value="Фэнтези">Фэнтези</option>
+                <option value="Комедия">Комедия</option>
+                <option value="Сенен">Сенен</option>
+                <!-- добавьте остальные жанры -->
+            </select>
+            <div class="error" id="genre-error">Выберите хотя бы один жанр.</div>
+        </div>
+        <div class="form-group">
+            <label for="releaseDate">Дата выхода:</label>
+            <input type="date" id="releaseDate" required>
+            <div class="error" id="release-date-error">Дата выхода обязательна.</div>
+        </div>
+        <div class="form-group">
+            <label for="studio">Студия:</label>
+            <input type="text" id="studio" placeholder="Введите название студии..." required>
+            <div class="error" id="studio-error">Студия обязательна для заполнения.</div>
+        </div>
+        <div class="form-group">
+            <label for="description">Описание:</label>
+            <textarea id="description" rows="4" placeholder="Заполните описание, не менее 20 букв..."
+                      required></textarea>
+            <div class="error" id="description-error">Описание должно содержать минимум 20 символов.</div>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">URL изображения (JPG/PNG/GIF):</label>
+            <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" required>
+            <div class="error" id="image-error">Укажите корректный URL изображения.</div>
+        </div>
+        <button id="submit-button" class="submit-button">Добавить аниме</button>
+    </div>
+</main>
+<footer>
+    <div>
+        <p>&copy; 2024 АнимеСайт.</p>
+        <p>
+            <a href="https://t.me" style="color: white; text-decoration: none;">Наш канал в Telegram</a> |
+            <a href="about.html" style="color: white; text-decoration: none;">О нас</a> |
+            <a href="add-item.html" style="color: white; text-decoration: none;">Добавить аниме</a>
+        </p>
+    </div>
+</footer>
 
-    <script>
+<script>
 
-        
-        document.getElementById('submit-button').addEventListener('click', async e => {
-          e.preventDefault();                     // не отправляем форму по-умолчанию
-          /* -------- очистка предыдущих ошибок -------- */
-          document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
-        
-          let isValid = true;                     // общий флаг
-        
-          /* -------- сбор полей -------- */
-          const title   = document.getElementById('title').value.trim();
-          const rating  = +document.getElementById('rating').value;
-          const type    = document.getElementById('type').value;
-          const status  = document.getElementById('status').value;
-          const studio  = document.getElementById('studio').value.trim();
-          const descr   = document.getElementById('description').value.trim();
-          const date    = document.getElementById('releaseDate').value;
-          const imgUrl  = document.getElementById('imageUrl').value.trim();
-          const genres  = Array.from(document.getElementById('genres').selectedOptions)
-                               .map(o => o.value);
-        
-          /* -------- базовая валидация -------- */
-          if (!title || title.length > 100) {
+
+    document.getElementById('submit-button').addEventListener('click', async e => {
+        e.preventDefault();                     // не отправляем форму по-умолчанию
+        /* -------- очистка предыдущих ошибок -------- */
+        document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+        let isValid = true;                     // общий флаг
+
+        /* -------- сбор полей -------- */
+        const title = document.getElementById('title').value.trim();
+        const rating = +document.getElementById('rating').value;
+        const type = document.getElementById('type').value;
+        const status = document.getElementById('status').value;
+        const studio = document.getElementById('studio').value.trim();
+        const descr = document.getElementById('description').value.trim();
+        const date = document.getElementById('releaseDate').value;
+        const imgUrl = document.getElementById('imageUrl').value.trim();
+        const genres = Array.from(document.getElementById('genres').selectedOptions)
+            .map(o => o.value);
+
+        /* -------- базовая валидация -------- */
+        if (!title || title.length > 100) {
             document.getElementById('title-error').style.display = 'block';
             isValid = false;
-          }
-        
-          if (isNaN(rating) || rating < 0 || rating > 10) {
+        }
+
+        if (isNaN(rating) || rating < 0 || rating > 10) {
             document.getElementById('rating-error').style.display = 'block';
             isValid = false;
-          }
-        
-          if (!genres.length) {
+        }
+
+        if (!genres.length) {
             document.getElementById('genre-error').style.display = 'block';
             isValid = false;
-          }
-        
-          if (!date) {
+        }
+
+        if (!date) {
             document.getElementById('release-date-error').style.display = 'block';
             isValid = false;
-          } else if (new Date(date).getFullYear() <= 1900) {
+        } else if (new Date(date).getFullYear() <= 1900) {
             const el = document.getElementById('release-date-error');
             el.textContent = 'Дата выхода должна быть позже 1900 года.';
             el.style.display = 'block';
             isValid = false;
-          }
-        
-          if (!studio) {
+        }
+
+        if (!studio) {
             document.getElementById('studio-error').style.display = 'block';
             isValid = false;
-          }
-        
-          if ((descr.match(/[a-zA-Zа-яА-Я]/g) || []).length < 20) {
+        }
+
+        if ((descr.match(/[a-zA-Zа-яА-Я]/g) || []).length < 20) {
             document.getElementById('description-error').style.display = 'block';
             isValid = false;
-          }
-        
-          if (!/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(imgUrl)) {
+        }
+
+        if (!/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(imgUrl)) {
             document.getElementById('image-error').style.display = 'block';
             isValid = false;
-          }
-        
-          if (!isValid) return;                   // останавливаемся, если есть ошибки
-        
-          /* -------- отправка -------- */
-          try {
+        }
+
+        if (!isValid) return;                   // останавливаемся, если есть ошибки
+
+        /* -------- отправка -------- */
+        try {
             const resp = await fetch('/api/addanime', {
-              method : 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body   : JSON.stringify({
-                title,
-                rating,
-                type,
-                status,
-                genres,
-                releaseDate : date,
-                studio,
-                description : descr,
-                imageUrl    : imgUrl,
-                episodes    : 0
-              })
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    title,
+                    rating,
+                    type,
+                    status,
+                    genres,
+                    releaseDate: date,
+                    studio,
+                    description: descr,
+                    imageUrl: imgUrl,
+                    episodes: 0
+                })
             });
             if (!resp.ok) {
                 // пробуем прочитать JSON
                 let details;
-                try   { details = await resp.json(); }
-                catch { details = await resp.text(); }
+                try {
+                    details = await resp.json();
+                } catch {
+                    details = await resp.text();
+                }
 
                 console.error('Backend validation error →', details);
                 alert(`Ошибка ${resp.status}: ${details.message || resp.statusText}`);
                 return;
             }
-        
+
             alert('Аниме успешно добавлено!');
             document.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
             document.getElementById('genres').selectedIndex = -1;   // сбрасываем множественный select
-          } catch (ex) {
+        } catch (ex) {
             alert('Не удалось добавить аниме: ' + ex.message);
-          }
-        });
-        </script>
+        }
+    });
+</script>
 </body>
 </html>

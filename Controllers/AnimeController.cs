@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AnimeSite.Data;
+using AnimeSite.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Headphones_Webstore.Data;
-using Headphones_Webstore.Models;
 
-namespace Headphones_Webstore.Controllers
+namespace AnimeSite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -56,18 +53,19 @@ namespace Headphones_Webstore.Controllers
             if (!string.IsNullOrWhiteSpace(genres))
             {
                 var tokens = genres.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                    .Select(g => g.Trim())
-                                    .ToList();
+                    .Select(g => g.Trim())
+                    .ToList();
 
                 var includeGenres = tokens.Where(g => !g.StartsWith("!", StringComparison.Ordinal)).ToList();
                 var excludeGenres = tokens.Where(g => g.StartsWith("!", StringComparison.Ordinal))
-                                           .Select(g => g[1..])
-                                           .ToList();
+                    .Select(g => g[1..])
+                    .ToList();
 
                 if (includeGenres.Any())
                 {
                     query = query.Where(a => includeGenres.Any(g => a.Genres.Contains(g)));
                 }
+
                 if (excludeGenres.Any())
                 {
                     query = query.Where(a => !excludeGenres.Any(g => a.Genres.Contains(g)));
@@ -98,7 +96,7 @@ namespace Headphones_Webstore.Controllers
                     query = desc ? query.OrderByDescending(a => a.Title) : query.OrderBy(a => a.Title);
                     break;
                 case "releasedate":
-                case "released":    // на всякий случай
+                case "released": // на всякий случай
                     query = desc ? query.OrderByDescending(a => a.ReleaseDate) : query.OrderBy(a => a.ReleaseDate);
                     break;
                 case "rating":
@@ -159,7 +157,7 @@ namespace Headphones_Webstore.Controllers
             var list = await _context.Set<Anime>()
                 .Where(a => EF.Functions.Like(a.Title.ToLower(), normalized + "%"))
                 .OrderBy(a => a.Title)
-                .Select(a => new                   // ▼ добавили ImagePath
+                .Select(a => new // ▼ добавили ImagePath
                 {
                     a.Id,
                     a.Title,

@@ -1,112 +1,151 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Избранное | АнимеСайт</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    .fav-container  {max-width:1200px;margin:auto;padding:20px}
-    .fav-empty      {text-align:center;font-size:20px;margin:40px 0}
-    .anime-card     {display:flex;gap:20px;background:#fff;margin-bottom:15px;padding:15px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-    .anime-card img {width:160px;border-radius:6px;object-fit:cover}
-    .anime-meta h3  {margin:0 0 8px}
-    .remove-btn     {margin-top:10px;background:#e74c3c;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer}
-    .remove-btn:hover{background:#c0392b}
-  </style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Избранное | АнимеСайт</title>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <style>
+        .fav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px
+        }
+
+        .fav-empty {
+            text-align: center;
+            font-size: 20px;
+            margin: 40px 0
+        }
+
+        .anime-card {
+            display: flex;
+            gap: 20px;
+            background: #fff;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .08)
+        }
+
+        .anime-card img {
+            width: 160px;
+            border-radius: 6px;
+            object-fit: cover
+        }
+
+        .anime-meta h3 {
+            margin: 0 0 8px
+        }
+
+        .remove-btn {
+            margin-top: 10px;
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer
+        }
+
+        .remove-btn:hover {
+            background: #c0392b
+        }
+    </style>
 </head>
 
 <body>
-  <header class="site-header">
+<header class="site-header">
     <div class="logo">АнимеСайт</div>
 
     <div class="search-container" role="search">
-      <form id="searchForm" class="search-form" autocomplete="off" aria-label="Поиск аниме">
-        <input
-          type="text"
-          id="searchInput"
-          class="search-input"
-          placeholder="Найти аниме по названию..."
-          aria-autocomplete="list"
-          aria-controls="suggestions"
-          aria-expanded="false"
-        />
-        <button type="submit" class="search-button" aria-label="Найти">🔍</button>
-      </form>
-      <ul id="suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Подсказки поиска"></ul>
+        <form id="searchForm" class="search-form" autocomplete="off" aria-label="Поиск аниме">
+            <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Найти аниме по названию..."
+                    aria-autocomplete="list"
+                    aria-controls="suggestions"
+                    aria-expanded="false"
+            />
+            <button type="submit" class="search-button" aria-label="Найти">🔍</button>
+        </form>
+        <ul id="suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Подсказки поиска"></ul>
     </div>
 
     <nav class="main-nav" aria-label="Главное меню">
-      <ul>
-        <li><a href="index.html">Главная</a></li>
-        <li><a href="catalog.html">Каталог</a></li>
-        <li><a href="top100.html">Топ-100 аниме</a></li>
-        <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
-        <li>
-          <a href="profile.html" aria-label="Профиль">
-            <img src="img/avatar.jpg" alt="" class="avatar" />
-          </a>
-        </li>
-      </ul>
+        <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="top100.html">Топ-100 аниме</a></li>
+            <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
+            <li>
+                <a href="profile.html" aria-label="Профиль">
+                    <img src="img/avatar.jpg" alt="" class="avatar"/>
+                </a>
+            </li>
+        </ul>
     </nav>
-  </header>
+</header>
 
 <main class="fav-container">
-  <h1>Моё избранное</h1>
-  <div id="favList"></div>
+    <h1>Моё избранное</h1>
+    <div id="favList"></div>
 </main>
 
 <footer>
-  <div>
-    <p>&copy; 2024 АнимеСайт.</p>
-    <p>
-      <a href="https://t.me" style="color:white;text-decoration:none">Telegram</a> |
-      <a href="about.html" style="color:white;text-decoration:none">О нас</a> |
-      <a href="add-item.html" style="color:white;text-decoration:none">Добавить аниме</a>
-    </p>
-  </div>
+    <div>
+        <p>&copy; 2024 АнимеСайт.</p>
+        <p>
+            <a href="https://t.me" style="color:white;text-decoration:none">Telegram</a> |
+            <a href="about.html" style="color:white;text-decoration:none">О нас</a> |
+            <a href="add-item.html" style="color:white;text-decoration:none">Добавить аниме</a>
+        </p>
+    </div>
 </footer>
 
 <script type="module">
     /* ---------- единый список избранного / корзины --------------- */
-    import { getFavSet, saveFavSet, updateFavCounter } from './js/fav-storage.js';
+    import {getFavSet, saveFavSet, updateFavCounter} from './js/fav-storage.js';
 
-      updateFavCounter();      
+    updateFavCounter();
 
     /* ---------- загрузка избранного --------------- */
     document.addEventListener('DOMContentLoaded', async () => {
-      const listEl = document.getElementById('favList');
-      const ids = [...getFavSet()];
+        const listEl = document.getElementById('favList');
+        const ids = [...getFavSet()];
 
-      if (!ids.length) {
-        listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
-        return;
-      }
-
-      for (const id of ids) {
-        try {
-          const res = await fetch(`/api/anime/${id}`);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const a = await res.json();
-          listEl.appendChild(renderCard(a));
-        } catch {
-          /* если товара уже нет в базе, удаляем id из избранного */
-          const set = getFavSet();
-          set.delete(id); saveFavSet(set);
+        if (!ids.length) {
+            listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
+            return;
         }
-      }
 
-      if (!listEl.children.length)
-        listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
+        for (const id of ids) {
+            try {
+                const res = await fetch(`/api/anime/${id}`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const a = await res.json();
+                listEl.appendChild(renderCard(a));
+            } catch {
+                /* если товара уже нет в базе, удаляем id из избранного */
+                const set = getFavSet();
+                set.delete(id);
+                saveFavSet(set);
+            }
+        }
+
+        if (!listEl.children.length)
+            listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
     });
 
     /* ---------- генерация карточки --------------- */
     function renderCard(a) {
-      const card = document.createElement('div');
-      card.className = 'anime-card';
-      card.dataset.id = a.id;
+        const card = document.createElement('div');
+        card.className = 'anime-card';
+        card.dataset.id = a.id;
 
-      card.innerHTML = `
+        card.innerHTML = `
         <img src="${a.imagePath || 'img/placeholder.png'}" alt="${a.title}">
         <div class="anime-meta">
           <h3>${a.title}</h3>
@@ -115,25 +154,25 @@
           <button class="remove-btn">Удалить</button>
         </div>
       `;
-      return card;
+        return card;
     }
 
     /* ---------- удаление из избранного --------------- */
     document.addEventListener('click', e => {
-      if (!e.target.classList.contains('remove-btn')) return;
+        if (!e.target.classList.contains('remove-btn')) return;
 
-      const card = e.target.closest('.anime-card');
-      const id   = +card.dataset.id;
-      card.remove();
+        const card = e.target.closest('.anime-card');
+        const id = +card.dataset.id;
+        card.remove();
 
-      const set = getFavSet();
-      set.delete(id);
-      saveFavSet(set);          // ⇦ пересчитает и выведет счётчик
+        const set = getFavSet();
+        set.delete(id);
+        saveFavSet(set);          // ⇦ пересчитает и выведет счётчик
 
-      if (!document.querySelector('.anime-card')) {
-        document.getElementById('favList').innerHTML =
-          '<p class="fav-empty">В избранном пока пусто.</p>';
-      }
+        if (!document.querySelector('.anime-card')) {
+            document.getElementById('favList').innerHTML =
+                '<p class="fav-empty">В избранном пока пусто.</p>';
+        }
     });
 </script>
 </body>
