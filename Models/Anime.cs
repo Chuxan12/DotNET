@@ -48,8 +48,6 @@ namespace Headphones_Webstore.Models
 
         public string? Description { get; set; }
 
-        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
         public DateTime ReleaseDate { get; set; } = DateTime.Today;
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

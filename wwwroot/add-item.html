@@ -62,22 +62,38 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">АнимеСайт</div>
-        <div class="search-container">
-            <form id="searchForm" onsubmit="return handleSearch(event);">
-                <input type="text" class="search-input" placeholder="Найти аниме по названию..." id="searchInput" required>
-                <button type="submit" class="search-button">🔍</button>
-            </form>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Главная</a></li>
-                <li><a href="catalog.html">Каталог</a></li>
-                <li><a href="top100.html">Топ-100 аниме</a></li>
-                <li><a href="profile.html"><img src="img/avatar.jpg" alt="Аватар" class="avatar"></a></li>
-            </ul>
-        </nav>
+    <header class="site-header">
+      <div class="logo">АнимеСайт</div>
+
+      <div class="search-container" role="search">
+        <form id="searchForm" class="search-form" autocomplete="off" aria-label="Поиск аниме">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Найти аниме по названию..."
+            aria-autocomplete="list"
+            aria-controls="suggestions"
+            aria-expanded="false"
+          />
+          <button type="submit" class="search-button" aria-label="Найти">🔍</button>
+        </form>
+        <ul id="suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Подсказки поиска"></ul>
+      </div>
+
+      <nav class="main-nav" aria-label="Главное меню">
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="top100.html">Топ-100 аниме</a></li>
+          <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
+          <li>
+            <a href="profile.html" aria-label="Профиль">
+              <img src="img/avatar.jpg" alt="" class="avatar" />
+            </a>
+          </li>
+        </ul>
+      </nav>
     </header>
     <main>
         <div class="container">
@@ -113,10 +129,15 @@
             <div class="form-group">
                 <label for="genres">Жанры (зажмите Ctrl/Cmd для множественного выбора):</label>
                 <select id="genres" multiple size="4" required>
-                  <option value="Драма">Драма</option>
                   <option value="Экшен">Экшен</option>
-                  <option value="Комедия">Комедия</option>
+                  <option value="Триллер">Триллер</option>
                   <option value="Фэнтези">Фэнтези</option>
+                  <option value="Приключения">Приключения</option>
+                  <option value="Драма">Драма</option>
+                  <option value="Исекай">Исекай</option>
+                  <option value="Фэнтези">Фэнтези</option>
+                  <option value="Комедия">Комедия</option>
+                  <option value="Сенен">Сенен</option>
                   <!-- добавьте остальные жанры -->
                 </select>
                 <div class="error" id="genre-error">Выберите хотя бы один жанр.</div>

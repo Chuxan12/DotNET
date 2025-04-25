@@ -91,6 +91,35 @@
   transition:transform .15s;
 }
 .fav-btn:hover{ transform:scale(1.05); }
+.autocomplete-suggestions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.autocomplete-suggestions li {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .5rem .8rem;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.autocomplete-suggestions li:hover,
+.autocomplete-suggestions li:focus {
+  background: rgba(0,0,0,.06);
+}
+
+.autocomplete-suggestions img {
+  width: 32px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex: none;
+}
       </style>
   </head>
   <body>
@@ -148,10 +177,13 @@
                   <div class="dropdown-content" id="genreDropdown">
                     <a href="#" data-value="Любой">Любой</a>
                     <a href="#" data-value="Экшен">Экшен</a>
-                    <a href="#" data-value="Комедия">Комедия</a>
+                    <a href="#" data-value="Триллер">Триллер</a>
                     <a href="#" data-value="Фэнтези">Фэнтези</a>
                     <a href="#" data-value="Приключения">Приключения</a>
                     <a href="#" data-value="Драма">Драма</a>
+                    <a href="#" data-value="Исекай">Исекай</a>
+                    <a href="#" data-value="Комедия">Комедия</a>
+                    <a href="#" data-value="Сенен">Сенен</a>
                   </div>
                 </div>
               </div>
@@ -163,10 +195,13 @@
                   <div class="dropdown-content" id="excludeGenreDropdown">
                     <a href="#" data-value="Нет">Нет</a>
                     <a href="#" data-value="Экшен">Экшен</a>
-                    <a href="#" data-value="Комедия">Комедия</a>
+                    <a href="#" data-value="Триллер">Триллер</a>
                     <a href="#" data-value="Фэнтези">Фэнтези</a>
                     <a href="#" data-value="Приключения">Приключения</a>
                     <a href="#" data-value="Драма">Драма</a>
+                    <a href="#" data-value="Исекай">Исекай</a>
+                    <a href="#" data-value="Комедия">Комедия</a>
+                    <a href="#" data-value="Сенен">Сенен</a>
                   </div>
                 </div>
               </div>
@@ -174,9 +209,10 @@
               <div class="filter-group">
                 <label>Тип:</label>
                 <div class="dropdown">
-                  <button class="dropbtn" id="animeTypeDropdownButton" data-selected="Любой">Любой</button>
+                  <button class="dropbtn" id="animeTypeDropdownButton"
+                          data-selected="">Любой</button>
                   <div class="dropdown-content" id="animeTypeDropdown">
-                    <a href="#" data-value="Любой">Любой</a>
+                    <a href="#" data-value="">Любой</a>
                     <a href="#" data-value="TV">Сериал</a>
                     <a href="#" data-value="Movie">Фильм</a>
                     <a href="#" data-value="OVA">OVA</a>
@@ -185,16 +221,18 @@
                   </div>
                 </div>
               </div>
-              <!-- Статус -->
+              
+              <!-- Статус (AnimeStatus) -->
               <div class="filter-group">
                 <label>Статус:</label>
                 <div class="dropdown">
-                  <button class="dropbtn" id="statusDropdownButton" data-selected="Любой">Любой</button>
+                  <button class="dropbtn" id="statusDropdownButton"
+                          data-selected="">Любой</button>
                   <div class="dropdown-content" id="statusDropdown">
-                    <a href="#" data-value="Любой">Любой</a>
-                    <a href="#" data-value="Выходящий">Выходящий</a>
-                    <a href="#" data-value="Завершенный">Завершенный</a>
-                    <a href="#" data-value="Анонсированный">Анонсированный</a>
+                    <a href="#" data-value="">Любой</a>
+                    <a href="#" data-value="Airing">Выходящий</a>
+                    <a href="#" data-value="Finished">Завершённый</a>
+                    <a href="#" data-value="Upcoming">Анонсированный</a>
                   </div>
                 </div>
               </div>
@@ -202,8 +240,8 @@
               <div class="filter-group">
                 <label>Год:</label>
                 <div class="year-slider">
-                  <input type="range" id="yearFrom" min="1900" max="2025" value="2000" />
-                  <input type="range" id="yearTo" min="1900" max="2025" value="2025" />
+                  <input type="range" id="yearFrom" min="1970" max="2025" value="2000" />
+                  <input type="range" id="yearTo" min="1970" max="2025" value="2025" />
                 </div>
                 <div id="yearRangeText">От 2000 до 2025</div>
               </div>
@@ -268,345 +306,334 @@
       */
 
       (() => {
-        'use strict';
+  'use strict';
 
-        /* -------------------------------------------------------------------------
-         * Constants & state
-         * ---------------------------------------------------------------------- */
-        const STORAGE_FAV_KEY = 'anime-favorites';
-        const PAGE_SIZE = 8;
+  /* -------------------------------------------------------------------------
+   * Constants & state
+   * ---------------------------------------------------------------------- */
+  const STORAGE_FAV_KEY = 'anime-favorites';
+  const PAGE_SIZE = 8;
 
-        const SELECTORS = {
-          favCounter: '[aria-label="Избранное"] .counter',
-          cartCounter: '[aria-label="Корзина"] .counter',
-          yearFrom: '#yearFrom',
-          yearTo: '#yearTo',
-          yearRangeText: '#yearRangeText',
-          dropdownLinks: '.dropdown-content a',
-          searchInput: '#searchInput',
-          suggestions: '#suggestions',
-          searchContainer: '.search-container',
-          results: '#results',
-          pagination: '#pagination',
-          applyFilters: '#applyFilters',
-          searchForm: '#searchForm'
-        };
+  const SELECTORS = {
+    favCounter: '[aria-label="Избранное"] .counter',
+    cartCounter: '[aria-label="Корзина"] .counter',
+    yearFrom: '#yearFrom',
+    yearTo: '#yearTo',
+    yearRangeText: '#yearRangeText',
+    dropdownLinks: '.dropdown-content a',
+    searchInput: '#searchInput',
+    suggestions: '#suggestions',
+    searchContainer: '.search-container',
+    results: '#results',
+    pagination: '#pagination',
+    applyFilters: '#applyFilters',
+    searchForm: '#searchForm'
+  };
 
-        const state = {
-          currentPage: 1
-        };
+  const state = { currentPage: 1 };
 
-        /* -------------------------------------------------------------------------
-         * Utilities
-         * ---------------------------------------------------------------------- */
-        const $ = (sel, ctx = document) => ctx.querySelector(sel);
-        const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+  /* -------------------------------------------------------------------------
+   * Utilities
+   * ---------------------------------------------------------------------- */
+  const $  = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-        const debounce = (fn, delay = 300) => {
-          let timer;
-          return (...args) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn.apply(null, args), delay);
-          };
-        };
+  const debounce = (fn, delay = 300) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(null, args), delay);
+    };
+  };
 
-        /* ----------------- Local‑storage wrapper for favourites ----------------- */
-        const favStore = {
-          get() {
-            try {
-              return new Set(JSON.parse(localStorage.getItem(STORAGE_FAV_KEY)) || []);
-            } catch {
-              return new Set();
-            }
-          },
-          save(set) {
-            localStorage.setItem(STORAGE_FAV_KEY, JSON.stringify([...set]));
-            updateFavCounter(set.size);
-          },
-          toggle(id) {
-            const favs = this.get();
-            favs.has(id) ? favs.delete(id) : favs.add(id);
-            this.save(favs);
-            return favs.has(id);
-          }
-        };
+  /* ----------------- Local-storage wrapper for favourites ----------------- */
+  const favStore = {
+    get() {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(STORAGE_FAV_KEY)) || []);
+      } catch {
+        return new Set();
+      }
+    },
+    save(set) {
+      localStorage.setItem(STORAGE_FAV_KEY, JSON.stringify([...set]));
+      updateFavCounter(set.size);
+    },
+    toggle(id) {
+      const favs = this.get();
+      favs.has(id) ? favs.delete(id) : favs.add(id);
+      this.save(favs);
+      return favs.has(id);
+    }
+  };
 
-        /* ----------------------------- API helpers ----------------------------- */
-        const api = {
-          async suggestions(term) {
-            const res = await fetch(`/api/anime/suggestions?searchTerm=${encodeURIComponent(term)}`);
-            return res.ok ? res.json() : [];
-          },
-          async animes(query) {
-            const res = await fetch(`/api/anime?${query}`);
-            return res.ok ? res.json() : { items: [], totalPages: 0 };
-          },
-          cart: {
-            async count() {
-              const res = await fetch('/api/cart/count', { credentials: 'include' });
-              return res.ok ? res.json() : { totalItems: 0 };
-            },
-            async add(id) {
-              const res = await fetch('/api/cart/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ animeId: id })
-              });
-              if (!res.ok) throw new Error(await res.text());
-              return res.json();
-            }
-          }
-        };
-
-        /* ----------------------------- DOM helpers ----------------------------- */
-        function updateFavCounter(count = favStore.get().size) {
-          const el = $(SELECTORS.favCounter);
-          if (el) el.textContent = count;
-        }
-
-        function updateCartCounter(count) {
-          const el = $(SELECTORS.cartCounter);
-          if (el) el.textContent = count;
-        }
-
-        function updateYearRangeText() {
-          const from = parseInt($(SELECTORS.yearFrom).value, 10);
-          const to = parseInt($(SELECTORS.yearTo).value, 10);
-          $(SELECTORS.yearRangeText).textContent = `От: ${Math.min(from, to)} до: ${Math.max(from, to)}`;
-        }
-
-        /* ------------------------ Filter/Query collection ---------------------- */
-        function mapBtn(id) {
-          const btn = $(id);
-          // dataset.selected is the canonical machine value (no spaces/ru‑camel) if present
-          return btn.dataset.selected || btn.textContent.trim();
-        }
-
-        function getFilterParams() {
-          const params = new URLSearchParams({ page: state.currentPage, pageSize: PAGE_SIZE });
-
-          const term = $(SELECTORS.searchInput).value.trim();
-          if (term) params.set('searchTerm', term);
-
-          const includeGenre = mapBtn('#genreDropdownButton');
-          const excludeGenre = mapBtn('#excludeGenreDropdownButton');
-          const type = mapBtn('#animeTypeDropdownButton');
-          const status = mapBtn('#statusDropdownButton');
-          const sortKey = mapBtn('#sortDropdownButton');
-          const orderKey = mapBtn('#orderDropdownButton');
-
-          /* ---------- genres (include + exclude) ---------- */
-          const genreTokens = [];
-          if (includeGenre && includeGenre !== 'Любой') genreTokens.push(includeGenre);
-          if (excludeGenre && excludeGenre !== 'Нет') genreTokens.push('!' + excludeGenre);
-          if (genreTokens.length) params.set('genres', genreTokens.join(','));
-
-          /* ---------- type / status ---------- */
-          if (type && type !== 'Любой') params.set('type', type);
-          if (status && status !== 'Любой') params.set('status', status);
-
-          /* ---------- year ---------- */
-          const yf = $(SELECTORS.yearFrom).value;
-          const yt = $(SELECTORS.yearTo).value;
-          if (yf) params.set('minYear', yf);
-          if (yt) params.set('maxYear', yt);
-
-          /* ---------- rating ---------- */
-          const rf = $('#ratingFrom').value;
-          const rt = $('#ratingTo').value;
-          if (rf) params.set('minRating', rf);
-          if (rt) params.set('maxRating', rt);
-
-          /* ---------- sorting ---------- */
-          const sortMap = {
-            Названию: 'Title',
-            Title: 'Title',
-            ДатеДобавления: 'ReleaseDate',
-            'Дате добавления': 'ReleaseDate',
-            ReleaseDate: 'ReleaseDate',
-            Рейтингу: 'Rating',
-            Rating: 'Rating'
-          };
-          if (sortMap[sortKey]) params.set('sortBy', sortMap[sortKey]);
-
-          const orderMap = {
-            ПоВозрастанию: 'asc',
-            asc: 'asc',
-            ПоУбыванию: 'desc',
-            desc: 'desc'
-          };
-          params.set('order', orderMap[orderKey] || 'asc');
-
-          return params.toString();
-        }
-
-        /* --------------------------- Rendering logic --------------------------- */
-        function renderPagination(totalPages) {
-          const container = $(SELECTORS.pagination);
-          container.innerHTML = '';
-          for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement('button');
-            btn.textContent = i;
-            btn.className = `page-btn${i === state.currentPage ? ' active' : ''}`;
-            btn.addEventListener('click', () => {
-              state.currentPage = i;
-              loadAnimes();
-            });
-            container.appendChild(btn);
-          }
-        }
-
-        function animeCardTemplate(a) {
-          const isFav = favStore.get().has(a.id);
-          return `
-            <div class="anime-item" data-id="${a.id}">
-            <img src="${a.imagePath}" alt="${a.title}" class="anime-img" />
-
-            <div class="anime-info">
-              <h3 class="title" title="${a.title}">${a.title}</h3>
-
-              <div class="meta">
-                <span class="rating">⭐ ${a.rating}</span>
-                <span class="year">Год: ${a.year}</span>
-              </div>
-
-              <div class="genre-info">Жанры: ${a.genres.join(' / ')}</div>
-
-              <p class="description">${a.description ?? ''}</p>
-            </div>
-
-            <div class="actions">
-              <button class="fav-btn" data-action="fav" aria-label="Избранное">
-                ${isFav ? '💔 Убрать' : '💜 В избранное'}
-              </button>
-            </div>
-          </div>`;
-        }
-
-        function renderAnimes(items) {
-          const container = $(SELECTORS.results);
-          if (!items.length) {
-            container.innerHTML = '<p>Ничего не найдено.</p>';
-            return;
-          }
-          container.innerHTML = items.map(animeCardTemplate).join('');
-        }
-
-        /* ------------------------- Event handler bundle ------------------------ */
-        function bindUIEvents() {
-          // Year range text
-          $$(`${SELECTORS.yearFrom}, ${SELECTORS.yearTo}`).forEach(el =>
-            el.addEventListener('input', updateYearRangeText)
-          );
-
-          // Dropdown selection (single delegated handler)
-          $$(SELECTORS.dropdownLinks).forEach(link =>
-            link.addEventListener('click', e => {
-              e.preventDefault();
-              const dd = e.target.closest('.dropdown');
-              const btn = dd.querySelector('.dropbtn');
-              btn.textContent = e.target.textContent.trim(); // human‑friendly label
-              // Machine value (dataset.value) falls back to trimmed text
-              btn.dataset.selected = e.target.dataset.value || e.target.textContent.trim();
-            })
-          );
-
-          // Search suggestions
-          $(SELECTORS.searchInput).addEventListener(
-            'input',
-            debounce(async e => {
-              const term = e.target.value;
-              const box = $(SELECTORS.suggestions);
-              if (!term.trim()) return box.classList.remove('visible');
-              const list = await api.suggestions(term);
-              if (!list.length) return box.classList.remove('visible');
-              box.innerHTML = list
-                .map(i => `<li role="option" data-id="${i.id}">${i.title}</li>`)
-                .join('');
-              box.classList.add('visible');
-            }, 250)
-          );
-
-          // Suggestion click
-          $(SELECTORS.suggestions).addEventListener('click', e => {
-            if (e.target.tagName !== 'LI') return;
-            $(SELECTORS.searchInput).value = e.target.textContent;
-            $(SELECTORS.suggestions).classList.remove('visible');
-            state.currentPage = 1;
-            loadAnimes();
-          });
-
-          // Click outside search container hides suggestions
-          document.addEventListener('click', e => {
-            if (!e.target.closest(SELECTORS.searchContainer)) $(SELECTORS.suggestions).classList.remove('visible');
-          });
-
-          // Apply filters / new search
-          $(SELECTORS.applyFilters).addEventListener('click', () => {
-            state.currentPage = 1;
-            loadAnimes();
-          });
-          $(SELECTORS.searchForm).addEventListener('submit', e => {
-            e.preventDefault();
-            state.currentPage = 1;
-            loadAnimes();
-          });
-
-          // Delegated actions in results
-          $(SELECTORS.results).addEventListener('click', async e => {
-            const action = e.target.dataset.action;
-            const card = e.target.closest('.anime-item');
-            if (!card) return;
-            const id = Number(card.dataset.id);
-
-            switch (action) {
-              case 'cart':
-                try {
-                  const { totalItems } = await api.cart.add(id);
-                  updateCartCounter(totalItems);
-                } catch (err) {
-                  console.error(err);
-                  alert(err.message);
-                }
-                break;
-              case 'fav':
-                {
-                  const isFav = favStore.toggle(id);
-                  e.target.textContent = isFav ? '💔 Убрать' : '💜 В избранное';
-                }
-                break;
-              default:
-                window.location.href = `anime.html?id=${id}`;
-            }
-          });
-        }
-
-        /* ------------------------------ Data flow ------------------------------ */
-        async function loadAnimes() {
-          const { items, totalPages } = await api.animes(getFilterParams());
-          renderAnimes(items);
-          renderPagination(totalPages);
-        }
-
-        async function loadCartCount() {
-          try {
-            const { totalItems } = await api.cart.count();
-            updateCartCounter(totalItems);
-          } catch {
-            updateCartCounter(0);
-          }
-        }
-
-        /* -------------------------------- Start -------------------------------- */
-        document.addEventListener('DOMContentLoaded', () => {
-          bindUIEvents();
-          updateYearRangeText();
-          updateFavCounter();
-          loadAnimes();
-          loadCartCount();
+  /* ----------------------------- API helpers ----------------------------- */
+  const api = {
+    async suggestions(term) {
+      const res = await fetch(`/api/anime/suggestions?searchTerm=${encodeURIComponent(term)}`);
+      return res.ok ? res.json() : [];
+    },
+    async animes(query) {
+      const res = await fetch(`/api/anime?${query}`);
+      return res.ok ? res.json() : { items: [], totalPages: 0 };
+    },
+    cart: {
+      async count() {
+        const res = await fetch('/api/cart/count', { credentials: 'include' });
+        return res.ok ? res.json() : { totalItems: 0 };
+      },
+      async add(id) {
+        const res = await fetch('/api/cart/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ animeId: id })
         });
-      })();
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+      }
+    }
+  };
+
+  /* ----------------------------- DOM helpers ----------------------------- */
+  const updateFavCounter = (cnt = favStore.get().size) => {
+    const el = $(SELECTORS.favCounter);
+    if (el) el.textContent = cnt;
+  };
+
+  const updateCartCounter = cnt => {
+    const el = $(SELECTORS.cartCounter);
+    if (el) el.textContent = cnt;
+  };
+
+  const updateYearRangeText = () => {
+    const from = parseInt($(SELECTORS.yearFrom).value, 10);
+    const to   = parseInt($(SELECTORS.yearTo).value, 10);
+    $(SELECTORS.yearRangeText).textContent = `От: ${Math.min(from, to)} до: ${Math.max(from, to)}`;
+  };
+
+  /* ------------------------ Filter/Query collection ---------------------- */
+  const mapBtn = id => {
+    const btn = $(id);
+    return btn.dataset.selected || btn.textContent.trim();
+  };
+
+  const getFilterParams = () => {
+    const p = new URLSearchParams({ page: state.currentPage, pageSize: PAGE_SIZE });
+
+    const term = $(SELECTORS.searchInput).value.trim();
+    if (term) p.set('searchTerm', term);
+
+    const includeGenre = mapBtn('#genreDropdownButton');
+    const excludeGenre = mapBtn('#excludeGenreDropdownButton');
+    const type        = mapBtn('#animeTypeDropdownButton');
+    const status      = mapBtn('#statusDropdownButton');
+    const sortKey     = mapBtn('#sortDropdownButton');
+    const orderKey    = mapBtn('#orderDropdownButton');
+
+    /* ---- genres ---- */
+    const genreTokens = [];
+    if (includeGenre && includeGenre !== 'Любой') genreTokens.push(includeGenre);
+    if (excludeGenre && excludeGenre !== 'Нет')  genreTokens.push('!' + excludeGenre);
+    if (genreTokens.length) p.set('genres', genreTokens.join(','));
+
+    /* ---- type / status ---- */
+    if (type   && type   !== 'Любой') p.set('type',   type);
+    if (status && status !== 'Любой') p.set('status', status);
+
+    /* ---- year ---- */
+    const yF = $(SELECTORS.yearFrom).value;
+    const yT = $(SELECTORS.yearTo).value;
+    if (yF) p.set('minYear', yF);
+    if (yT) p.set('maxYear', yT);
+
+    /* ---- rating ---- */
+    const rF = $('#ratingFrom').value;
+    const rT = $('#ratingTo').value;
+    if (rF) p.set('minRating', rF);
+    if (rT) p.set('maxRating', rT);
+
+    /* ---- sorting ---- */
+    const sortMap = {
+      Названию: 'Title', Title: 'Title',
+      ДатеДобавления: 'ReleaseDate', 'Дате добавления': 'ReleaseDate', ReleaseDate: 'ReleaseDate',
+      Рейтингу: 'Rating', Rating: 'Rating'
+    };
+    if (sortMap[sortKey]) p.set('sortBy', sortMap[sortKey]);
+
+    const orderMap = { ПоВозрастанию: 'asc', asc: 'asc', ПоУбыванию: 'desc', desc: 'desc' };
+    p.set('order', orderMap[orderKey] || 'asc');
+
+    return p.toString();
+  };
+
+  /* --------------------------- Rendering logic --------------------------- */
+  const renderPagination = total => {
+    const c = $(SELECTORS.pagination);
+    c.innerHTML = '';
+    for (let i = 1; i <= total; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = `page-btn${i === state.currentPage ? ' active' : ''}`;
+      btn.addEventListener('click', () => {
+        state.currentPage = i;
+        loadAnimes();
+      });
+      c.appendChild(btn);
+    }
+  };
+
+  const animeCardTemplate = a => {
+    const isFav = favStore.get().has(a.id);
+    return `
+      <div class="anime-item" data-id="${a.id}">
+        <img src="${a.imagePath}" alt="${a.title}" class="anime-img" />
+        <div class="anime-info">
+          <h3 class="title" title="${a.title}">${a.title}</h3>
+          <div class="meta">
+            <span class="rating">⭐ ${a.rating}</span>
+            <span class="year">Год: ${a.year}</span>
+          </div>
+          <div class="genre-info">Жанры: ${a.genres.join(' / ')}</div>
+          <p class="description">${a.description ?? ''}</p>
+        </div>
+        <div class="actions">
+          <button class="fav-btn" data-action="fav" aria-label="Избранное">
+            ${isFav ? '💔 Убрать' : '💜 В избранное'}
+          </button>
+        </div>
+      </div>`;
+  };
+
+  const renderAnimes = items => {
+    const c = $(SELECTORS.results);
+    c.innerHTML = items.length
+      ? items.map(animeCardTemplate).join('')
+      : '<p>Ничего не найдено.</p>';
+  };
+
+  /* ------------------------- Event handler bundle ------------------------ */
+  function bindUIEvents() {
+    /* --- year range text --- */
+    $$(`${SELECTORS.yearFrom}, ${SELECTORS.yearTo}`)
+      .forEach(el => el.addEventListener('input', updateYearRangeText));
+
+    /* --- dropdown select --- */
+    $$(SELECTORS.dropdownLinks).forEach(link =>
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const dd  = e.target.closest('.dropdown');
+        const btn = dd.querySelector('.dropbtn');
+        btn.textContent    = e.target.textContent.trim();        // human
+        btn.dataset.selected = e.target.dataset.value
+                            || e.target.textContent.trim();      // machine
+      })
+    );
+
+    /* --- smart search suggestions (NEW) --- */
+    $(SELECTORS.searchInput).addEventListener(
+      'input',
+      debounce(async e => {
+        const term = e.target.value.trim();
+        const box  = $(SELECTORS.suggestions);
+        if (!term) return box.classList.remove('visible');
+
+        const list = await api.suggestions(term);
+        if (!list.length) return box.classList.remove('visible');
+
+        box.innerHTML = list.map(i => `
+          <li role="option" tabindex="0" data-id="${i.id}">
+            <img src="${i.imagePath || '/img/placeholder.jpg'}" alt="" />
+            <span>${i.title}</span>
+          </li>`).join('');
+        box.classList.add('visible');
+      }, 250)
+    );
+
+    $(SELECTORS.suggestions).addEventListener('click', handleSuggestionNavigate);
+    $(SELECTORS.suggestions).addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleSuggestionNavigate(e);
+    });
+
+    function handleSuggestionNavigate(e) {
+      const li = e.target.closest('li');
+      if (!li) return;
+      const id = li.dataset.id;
+      if (id) window.location.href = `anime.html?id=${id}`;
+    }
+
+    /* --- hide box on outside click --- */
+    document.addEventListener('click', e => {
+      if (!e.target.closest(SELECTORS.searchContainer))
+        $(SELECTORS.suggestions).classList.remove('visible');
+    });
+
+    /* --- filters / search submit --- */
+    $(SELECTORS.applyFilters).addEventListener('click', () => {
+      state.currentPage = 1;
+      loadAnimes();
+    });
+    $(SELECTORS.searchForm).addEventListener('submit', e => {
+      e.preventDefault();
+      state.currentPage = 1;
+      loadAnimes();
+    });
+
+    /* --- delegated actions on cards --- */
+    $(SELECTORS.results).addEventListener('click', async e => {
+      const card   = e.target.closest('.anime-item');
+      const action = e.target.dataset.action;
+      if (!card) return;
+
+      const id = Number(card.dataset.id);
+      switch (action) {
+        case 'cart':
+          try {
+            const { totalItems } = await api.cart.add(id);
+            updateCartCounter(totalItems);
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+          break;
+        case 'fav':
+          {
+            const fav = favStore.toggle(id);
+            e.target.textContent = fav ? '💔 Убрать' : '💜 В избранное';
+          }
+          break;
+        default:
+          window.location.href = `anime.html?id=${id}`;
+      }
+    });
+  }
+
+  /* ------------------------------ Data flow ------------------------------ */
+  const loadAnimes = async () => {
+    const { items, totalPages } = await api.animes(getFilterParams());
+    renderAnimes(items);
+    renderPagination(totalPages);
+  };
+
+  const loadCartCount = async () => {
+    try {
+      const { totalItems } = await api.cart.count();
+      updateCartCounter(totalItems);
+    } catch {
+      updateCartCounter(0);
+    }
+  };
+
+  /* -------------------------------- Start -------------------------------- */
+  document.addEventListener('DOMContentLoaded', () => {
+    bindUIEvents();
+    updateYearRangeText();
+    updateFavCounter();
+    loadAnimes();
+    loadCartCount();
+  });
+})();
+
     </script>
   </body>
 </html>

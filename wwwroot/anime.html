@@ -82,108 +82,104 @@
 </footer>
 
 <script type="module">
-    /* общий модуль избранного --------------------------------- */
-    import { getFavSet, saveFavSet, updateFavCounter } from './js/fav-storage.js';
-    
-    /* -------------------- вспомогательные функции -------------------- */
-    function qs(name, url = window.location.href) {
-      name = name.replace(/[\\[\\]]/g, '\\$&');
-      const m = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)').exec(url);
-      return m && m[2] ? decodeURIComponent(m[2].replace(/\\+/g, ' ')) : null;
-    }
-    
-    /* -------------------- загрузка данных тайтла -------------------- */
-    (async function init() {
-      const id = qs('id');
-      if (!id) {
-        document.getElementById('animeSection').innerHTML = '<p>Не указан ID аниме.</p>';
-        return;
-      }
-      try {
-        const res = await fetch(`/api/anime/${id}`);
-        if (!res.ok) throw new Error('Ошибка ' + res.status);
-        const a = await res.json();
-    
-        document.title = a.title + ' | АнимеСайт';
-        renderAnime(a);
-    
-        /* выводим начальное значение счётчика из localStorage */
-        updateFavCounter();
-    
-        /* дополнительно синхронизируемся с сервером, если он ведёт свою корзину */
-        syncWithServerCount();
-      } catch (err) {
-        document.getElementById('animeSection').innerHTML = `<p>${err.message}</p>`;
-      }
-    })();
-    
-    /* ---------- рендер аниме ---------- */
-    function renderAnime(a) {
-      const section = document.getElementById('animeSection');
-      section.innerHTML = `
-        <div class="anime-wrapper">
-          <img src="${a.imagePath}" alt="${a.title}" class="anime-img">
-          <div class="anime-meta">
-            <h1>${a.title}</h1>
-            <div class="rating">⭐ ${a.rating}</div>
-            <p><strong>Тип:</strong> ${a.type}</p>
-            <p><strong>Эпизоды:</strong> ${a.episodes}</p>
-            <p><strong>Статус:</strong> ${a.status}</p>
-            <p><strong>Жанры:</strong> ${a.genres.join(' / ')}</p>
-            <p><strong>Студия:</strong> ${a.studio}</p>
-            <p><strong>Год:</strong> ${a.year}</p>
-            <button class="add-to-cart" data-anime-id="${a.id}">
-              Добавить в избранное
-            </button>
-          </div>
-        </div>`;
-    
-      if (a.description) {
-        document.getElementById('descriptionSection').hidden = false;
-        document.getElementById('animeDescription').textContent = a.description;
-      }
-    }
-    
-    /* -------------------- обработчики -------------------- */
-    document.body.addEventListener('click', e => {
-      /* добавление в избранное */
-      if (!e.target.matches('.add-to-cart')) return;
-    
-      const id = +e.target.dataset.animeId;
-    
-      fetch('/api/cart/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ animeId: id })
-      })
-      .then(r => r.ok ? r.json() : r.text().then(t => Promise.reject(t)))
-      .then(data => {
-        /* сервер вернул актуальное количество – рисуем его */
-        updateFavCounter(data.totalItems);
-    
-        /* кладём ID в localStorage, чтобы страница избранного увидела то же */
-        const set = getFavSet();
-        set.add(id);
-        saveFavSet(set);
-      })
-      .catch(err => alert(err));
-    });
-    
-    /* ---------- поиск по сайту ---------- */
-    document.getElementById('searchForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const term = document.getElementById('searchInput').value.trim();
-      if (term) location.href = `catalog.html?search=${encodeURIComponent(term)}`;
-    });
-    
-    /* ---------- синхронизация при открытии страницы ---------- */
-    function syncWithServerCount() {
+/* ---------- модули избранного ---------- */
+import { getFavSet, saveFavSet, updateFavCounter } from './js/fav-storage.js';
+
+/* ---------- вспомогательная функция ---------- */
+function qs(name, url = window.location.href) {
+  name = name.replace(/[\\[\\]]/g, '\\$&');
+  const m = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)').exec(url);
+  return m && m[2] ? decodeURIComponent(m[2].replace(/\+/g, ' ')) : null;
+}
+
+/* ---------- загрузка данных тайтла + количества избранного ---------- */
+(async function init() {
+  const id = qs('id');
+  if (!id) {
+    document.getElementById('animeSection').innerHTML = '<p>Не указан ID аниме.</p>';
+    return;
+  }
+
+  try {
+    /* одновременно получаем тайтл и размер корзины */
+    const [animeRes, cartRes] = await Promise.all([
+      fetch(`/api/anime/${id}`),
       fetch('/api/cart/count', { credentials: 'include' })
-        .then(r => r.ok ? r.json() : { totalItems: 0 })
-        .then(d => updateFavCounter(d.totalItems))
-        .catch(() => updateFavCounter());
+    ]);
+
+    if (!animeRes.ok) throw new Error('Ошибка ' + animeRes.status);
+    const a = await animeRes.json();
+    document.title = a.title + ' | АнимеСайт';
+    renderAnime(a);
+
+    /* показываем реальное число от сервера; при ошибке — локальное */
+    if (cartRes.ok) {
+      const { totalItems } = await cartRes.json();
+      updateFavCounter(totalItems);
+    } else {
+      updateFavCounter();
     }
+  } catch (err) {
+    document.getElementById('animeSection').innerHTML = `<p>${err.message}</p>`;
+  }
+})();
+
+/* ---------- рендер аниме ---------- */
+function renderAnime(a) {
+  const section = document.getElementById('animeSection');
+  section.innerHTML = `
+    <div class="anime-wrapper">
+      <img src="${a.imagePath}" alt="${a.title}" class="anime-img">
+      <div class="anime-meta">
+        <h1>${a.title}</h1>
+        <div class="rating">⭐ ${a.rating}</div>
+        <p><strong>Тип:</strong> ${a.type}</p>
+        <p><strong>Эпизоды:</strong> ${a.episodes}</p>
+        <p><strong>Статус:</strong> ${a.status}</p>
+        <p><strong>Жанры:</strong> ${a.genres.join(' / ')}</p>
+        <p><strong>Студия:</strong> ${a.studio}</p>
+        <p><strong>Год:</strong> ${a.year}</p>
+        <button class="add-to-cart" data-anime-id="${a.id}">
+          Добавить в избранное
+        </button>
+      </div>
+    </div>`;
+
+  if (a.description) {
+    document.getElementById('descriptionSection').hidden = false;
+    document.getElementById('animeDescription').textContent = a.description;
+  }
+}
+
+/* ---------- обработчики ---------- */
+document.body.addEventListener('click', (e) => {
+  /* добавление в избранное */
+  if (!e.target.matches('.add-to-cart')) return;
+  const id = +e.target.dataset.animeId;
+
+  fetch('/api/cart/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ animeId: id })
+  })
+    .then((r) => (r.ok ? r.json() : r.text().then((t) => Promise.reject(t))))
+    .then((data) => {
+      /* 1. счётчик от сервера */
+      updateFavCounter(data.totalItems);
+      /* 2. localStorage держим в том же состоянии */
+      const set = getFavSet();
+      set.add(id); saveFavSet(set);
+    })
+    .catch((err) => alert(err));
+});
+
+/* ---------- поиск ---------- */
+document.getElementById('searchForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const term = document.getElementById('searchInput').value.trim();
+  if (term) location.href = `catalog.html?search=${encodeURIComponent(term)}`;
+});
     </script>
 </body>
 </html>

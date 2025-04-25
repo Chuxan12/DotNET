@@ -159,7 +159,12 @@ namespace Headphones_Webstore.Controllers
             var list = await _context.Set<Anime>()
                 .Where(a => EF.Functions.Like(a.Title.ToLower(), normalized + "%"))
                 .OrderBy(a => a.Title)
-                .Select(a => new { a.Id, a.Title })
+                .Select(a => new                   // ▼ добавили ImagePath
+                {
+                    a.Id,
+                    a.Title,
+                    a.ImagePath
+                })
                 .Take(5)
                 .ToListAsync();
 

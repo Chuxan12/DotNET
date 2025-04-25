@@ -49,28 +49,6 @@ namespace Headphones_Webstore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comment",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AnimeId = table.Column<int>(type: "int", nullable: false),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Comment_Anime_AnimeId",
-                        column: x => x.AnimeId,
-                        principalTable: "Anime",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CartItems",
                 columns: table => new
                 {
@@ -85,7 +63,7 @@ namespace Headphones_Webstore.Migrations
                 {
                     table.PrimaryKey("PK_CartItems", x => x.CartItemID);
                     table.ForeignKey(
-                        name: "FK_CartItems_Anime_ProductID",
+                        name: "FK_CartItems_Anime_AnimeId",
                         column: x => x.AnimeId,
                         principalTable: "Anime",
                         principalColumn: "Id",
@@ -99,7 +77,7 @@ namespace Headphones_Webstore.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItems_ProductID",
+                name: "IX_CartItems_AnimeId",
                 table: "CartItems",
                 column: "AnimeId");
 
@@ -107,11 +85,6 @@ namespace Headphones_Webstore.Migrations
                 name: "IX_CartItems_SessionID",
                 table: "CartItems",
                 column: "SessionID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comment_AnimeId",
-                table: "Comment",
-                column: "AnimeId");
         }
 
         /// <inheritdoc />
@@ -121,13 +94,10 @@ namespace Headphones_Webstore.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
-                name: "Comment");
+                name: "Anime");
 
             migrationBuilder.DropTable(
                 name: "Sessions");
-
-            migrationBuilder.DropTable(
-                name: "Anime");
         }
     }
 }

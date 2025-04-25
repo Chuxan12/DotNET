@@ -83,7 +83,7 @@ public class AddAnimeDto
     [MinLength(1)]               public List<string> Genres { get; set; } = new();
     [Required]                   public string ReleaseDate  { get; set; } = null!; // YYYY-MM-DD
     [StringLength(100)]          public string? Studio      { get; set; }
-    [StringLength(300)]          public string? Description { get; set; }
+    [StringLength(10000)]        public string? Description { get; set; }
     [Required, Url]              public string ImageUrl     { get; set; } = null!;
     [Range(0, 1000)]             public int Episodes        { get; set; } = 0;
 }

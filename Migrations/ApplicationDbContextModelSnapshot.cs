@@ -107,35 +107,6 @@ namespace Headphones_Webstore.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("Headphones_Webstore.Models.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnimeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimeId");
-
-                    b.ToTable("Comment");
-                });
-
             modelBuilder.Entity("Headphones_Webstore.Models.Sessions", b =>
                 {
                     b.Property<Guid>("SessionID")
@@ -167,22 +138,6 @@ namespace Headphones_Webstore.Migrations
                     b.Navigation("Anime");
 
                     b.Navigation("Session");
-                });
-
-            modelBuilder.Entity("Headphones_Webstore.Models.Comment", b =>
-                {
-                    b.HasOne("Headphones_Webstore.Models.Anime", "Anime")
-                        .WithMany("Comments")
-                        .HasForeignKey("AnimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Anime");
-                });
-
-            modelBuilder.Entity("Headphones_Webstore.Models.Anime", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Headphones_Webstore.Models.Sessions", b =>

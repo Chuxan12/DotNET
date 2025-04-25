@@ -15,7 +15,7 @@ namespace Headphones_Webstore.Models
         public Sessions Session { get; set; }
 
         [Required]
-        public int AnimeId { get; set; } // Было AnimeId
+        public int AnimeId { get; set; }
 
         [ForeignKey("AnimeId")]
         public Anime Anime { get; set; }

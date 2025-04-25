@@ -17,23 +17,39 @@
 </head>
 
 <body>
-<header class="site-header">
-  <div class="logo">АнимеСайт</div>
+  <header class="site-header">
+    <div class="logo">АнимеСайт</div>
 
-  <nav class="main-nav" aria-label="Главное меню">
-    <ul>
-      <li><a href="index.html">Главная</a></li>
-      <li><a href="catalog.html">Каталог</a></li>
-      <li><a href="top100.html">Топ-100</a></li>
-      <li>
-        <a href="favorites.html" aria-label="Избранное">
-          Избранное <span class="counter">0</span>
-        </a>
-      </li>
-      <li><a href="profile.html"><img src="img/avatar.jpg" alt="" class="avatar" /></a></li>
-    </ul>
-  </nav>
-</header>
+    <div class="search-container" role="search">
+      <form id="searchForm" class="search-form" autocomplete="off" aria-label="Поиск аниме">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Найти аниме по названию..."
+          aria-autocomplete="list"
+          aria-controls="suggestions"
+          aria-expanded="false"
+        />
+        <button type="submit" class="search-button" aria-label="Найти">🔍</button>
+      </form>
+      <ul id="suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Подсказки поиска"></ul>
+    </div>
+
+    <nav class="main-nav" aria-label="Главное меню">
+      <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="top100.html">Топ-100 аниме</a></li>
+        <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
+        <li>
+          <a href="profile.html" aria-label="Профиль">
+            <img src="img/avatar.jpg" alt="" class="avatar" />
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
 <main class="fav-container">
   <h1>Моё избранное</h1>
@@ -52,73 +68,73 @@
 </footer>
 
 <script type="module">
-/* ---------- единый список избранного / корзины --------------- */
-import { getFavSet, saveFavSet, updateFavCounter } from './js/fav-storage.js';
+    /* ---------- единый список избранного / корзины --------------- */
+    import { getFavSet, saveFavSet, updateFavCounter } from './js/fav-storage.js';
 
-  updateFavCounter();      
+      updateFavCounter();      
 
-/* ---------- загрузка избранного --------------- */
-document.addEventListener('DOMContentLoaded', async () => {
-  const listEl = document.getElementById('favList');
-  const ids = [...getFavSet()];
+    /* ---------- загрузка избранного --------------- */
+    document.addEventListener('DOMContentLoaded', async () => {
+      const listEl = document.getElementById('favList');
+      const ids = [...getFavSet()];
 
-  if (!ids.length) {
-    listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
-    return;
-  }
+      if (!ids.length) {
+        listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
+        return;
+      }
 
-  for (const id of ids) {
-    try {
-      const res = await fetch(`/api/anime/${id}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const a = await res.json();
-      listEl.appendChild(renderCard(a));
-    } catch {
-      /* если товара уже нет в базе, удаляем id из избранного */
-      const set = getFavSet();
-      set.delete(id); saveFavSet(set);
+      for (const id of ids) {
+        try {
+          const res = await fetch(`/api/anime/${id}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const a = await res.json();
+          listEl.appendChild(renderCard(a));
+        } catch {
+          /* если товара уже нет в базе, удаляем id из избранного */
+          const set = getFavSet();
+          set.delete(id); saveFavSet(set);
+        }
+      }
+
+      if (!listEl.children.length)
+        listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
+    });
+
+    /* ---------- генерация карточки --------------- */
+    function renderCard(a) {
+      const card = document.createElement('div');
+      card.className = 'anime-card';
+      card.dataset.id = a.id;
+
+      card.innerHTML = `
+        <img src="${a.imagePath || 'img/placeholder.png'}" alt="${a.title}">
+        <div class="anime-meta">
+          <h3>${a.title}</h3>
+          <p>⭐ ${a.rating} &nbsp;|&nbsp; ${a.year}</p>
+          <p>${a.genres.join(' / ')}</p>
+          <button class="remove-btn">Удалить</button>
+        </div>
+      `;
+      return card;
     }
-  }
 
-  if (!listEl.children.length)
-    listEl.innerHTML = '<p class="fav-empty">В избранном пока пусто.</p>';
-});
+    /* ---------- удаление из избранного --------------- */
+    document.addEventListener('click', e => {
+      if (!e.target.classList.contains('remove-btn')) return;
 
-/* ---------- генерация карточки --------------- */
-function renderCard(a) {
-  const card = document.createElement('div');
-  card.className = 'anime-card';
-  card.dataset.id = a.id;
+      const card = e.target.closest('.anime-card');
+      const id   = +card.dataset.id;
+      card.remove();
 
-  card.innerHTML = `
-    <img src="${a.imagePath || 'img/placeholder.png'}" alt="${a.title}">
-    <div class="anime-meta">
-      <h3>${a.title}</h3>
-      <p>⭐ ${a.rating} &nbsp;|&nbsp; ${a.year}</p>
-      <p>${a.genres.join(' / ')}</p>
-      <button class="remove-btn">Удалить</button>
-    </div>
-  `;
-  return card;
-}
+      const set = getFavSet();
+      set.delete(id);
+      saveFavSet(set);          // ⇦ пересчитает и выведет счётчик
 
-/* ---------- удаление из избранного --------------- */
-document.addEventListener('click', e => {
-  if (!e.target.classList.contains('remove-btn')) return;
-
-  const card = e.target.closest('.anime-card');
-  const id   = +card.dataset.id;
-  card.remove();
-
-  const set = getFavSet();
-  set.delete(id);
-  saveFavSet(set);          // ⇦ пересчитает и выведет счётчик
-
-  if (!document.querySelector('.anime-card')) {
-    document.getElementById('favList').innerHTML =
-      '<p class="fav-empty">В избранном пока пусто.</p>';
-  }
-});
+      if (!document.querySelector('.anime-card')) {
+        document.getElementById('favList').innerHTML =
+          '<p class="fav-empty">В избранном пока пусто.</p>';
+      }
+    });
 </script>
 </body>
 </html>
