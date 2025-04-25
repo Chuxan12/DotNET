@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Headphones_Webstore.Data;
-using Headphones_Webstore.Models;
+using AnimeSite.Data;
+using AnimeSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
-namespace Headphones_Webstore.Controllers;
+namespace AnimeSite.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

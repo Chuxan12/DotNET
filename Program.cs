@@ -1,8 +1,8 @@
-using Headphones_Webstore.Data;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using AnimeSite.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

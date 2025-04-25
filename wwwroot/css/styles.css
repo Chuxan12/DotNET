@@ -227,7 +227,7 @@ footer {
     position: absolute;
     background-color: #fff;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
@@ -408,7 +408,7 @@ input[type="number"] {
     text-align: left;
     font-size: 1em;
     color: #333;
-    font-weight: bold; 
+    font-weight: bold;
 }
 
 .activity {
@@ -419,22 +419,26 @@ input[type="number"] {
     margin: 20px auto;
     max-width: 1200px;
 }
+
 #scrollToTopBtn {
     background-color: #666;
-    color: white; 
-    border: none; 
+    color: white;
+    border: none;
     padding: 10px;
     cursor: pointer;
     font-size: 16px;
 }
+
 #scrollToTopBtn:hover {
     background-color: #666;
 }
+
 .about-me {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
 }
+
 .anime-news {
     display: flex;
     flex-direction: column;
@@ -481,17 +485,20 @@ input[type="number"] {
     list-style: none;
     z-index: 1000;
 }
+
 .autocomplete-suggestions li {
     padding: 8px;
     cursor: pointer;
 }
+
 .autocomplete-suggestions li:hover {
     background-color: #f0f0f0;
 }
+
 /* ========================
    HEADER & SEARCH-STYLES
    ======================== */
-   .site-header {
+.site-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -500,41 +507,41 @@ input[type="number"] {
     color: #fff;
     position: relative;
     z-index: 100;
-  }
-  
-  /* Logo */
-  .logo {
+}
+
+/* Logo */
+.logo {
     font-size: 1.75rem;
     font-weight: 700;
-  }
-  
-  /* Search */
-  .search-container {
+}
+
+/* Search */
+.search-container {
     position: relative;
     width: 320px;
-  }
-  
-  .search-form {
+}
+
+.search-form {
     display: flex;
     width: 100%;
     background: #fff;
     border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
-  
-  .search-input {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.search-input {
     flex: 1;
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
     border: none;
-  }
-  
-  .search-input:focus {
+}
+
+.search-input:focus {
     outline: none;
-  }
-  
-  .search-button {
+}
+
+.search-button {
     background: #ff6f61;
     border: none;
     color: #fff;
@@ -542,14 +549,14 @@ input[type="number"] {
     cursor: pointer;
     font-size: 1.2rem;
     transition: background 0.2s ease;
-  }
-  
-  .search-button:hover {
+}
+
+.search-button:hover {
     background: #e65b50;
-  }
-  
-  /* Autocomplete suggestions */
-  .autocomplete-suggestions {
+}
+
+/* Autocomplete suggestions */
+.autocomplete-suggestions {
     position: absolute;
     top: calc(100% + 4px);
     left: 0;
@@ -557,7 +564,7 @@ input[type="number"] {
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 0 0 6px 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-height: 240px;
     overflow-y: auto;
     margin: 0;
@@ -567,110 +574,115 @@ input[type="number"] {
     opacity: 0;
     transform: translateY(-8px);
     transition: visibility 0s ease 0.2s, opacity 0.2s ease, transform 0.2s ease;
-  }
-  
+}
+
 /* Контейнер поиска */
 .search-container {
     position: relative;
     width: 320px;
     margin: 0 auto;
-  }
-  
-  /* Скрываем подсказки по умолчанию */
-  .autocomplete-suggestions {
+}
+
+/* Скрываем подсказки по умолчанию */
+.autocomplete-suggestions {
     position: absolute;
     top: calc(100% + 4px);
     left: 0;
     right: 0;
-    display: none;               /* Скрыто */
+    display: none; /* Скрыто */
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 0 0 6px 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-height: 240px;
     overflow-y: auto;
     z-index: 10;
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-  
-  /* Показываем подсказки, когда фокус внутри .search-container */
-  .search-container:focus-within .autocomplete-suggestions {
-    display: block;              /* Показываем */
-  }
-  
-  /* Стили для элементов списка подсказок */
-  .autocomplete-suggestions li {
+}
+
+/* Показываем подсказки, когда фокус внутри .search-container */
+.search-container:focus-within .autocomplete-suggestions {
+    display: block; /* Показываем */
+}
+
+/* Стили для элементов списка подсказок */
+.autocomplete-suggestions li {
     padding: 0.6rem 0.8rem;
     cursor: pointer;
     transition: background 0.2s ease;
-  }
-  
-  .autocomplete-suggestions li:hover,
-  .autocomplete-suggestions li:focus {
+}
+
+.autocomplete-suggestions li:hover,
+.autocomplete-suggestions li:focus {
     background: #f5f5f5;
-  }
-  
-  /* Подсветка активного (клавиатурный) */
-  .autocomplete-suggestions li[aria-selected="true"] {
+}
+
+/* Подсветка активного (клавиатурный) */
+.autocomplete-suggestions li[aria-selected="true"] {
     background: #e0e0e0;
-  }
-  
-  /* Обновим кнопку поиска, чтобы она была над списком при необходимости */
-  .search-button {
+}
+
+/* Обновим кнопку поиска, чтобы она была над списком при необходимости */
+.search-button {
     position: relative;
     z-index: 20;
-  }
-  .autocomplete-suggestions {
-    display: block;   /* всегда рендерится, JS управляет видимостью */
+}
+
+.autocomplete-suggestions {
+    display: block; /* всегда рендерится, JS управляет видимостью */
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.2s ease;
-  }
-  .autocomplete-suggestions.visible {
+}
+
+.autocomplete-suggestions.visible {
     visibility: visible;
     opacity: 1;
-  }
-  /* 1. Разрешаем “витание” дочерних элементов за пределы header */
+}
+
+/* 1. Разрешаем “витание” дочерних элементов за пределы header */
 header.site-header {
-    position: relative;   /* уже должно быть */
-    overflow: visible;    /* ← важно! */
-  }
-  
-  /* 2. То же для контейнера поиска, если нужно */
-  .search-container {
-    position: relative;   /* уже есть */
-    overflow: visible;    /* ← чтобы подсказки могли вылезать наружу */
-  }
-  
-  /* 3. Подсказки — абсолютные и поверх всего */
-  .autocomplete-suggestions {
-    position: absolute;   /* учитывает .search-container */
+    position: relative; /* уже должно быть */
+    overflow: visible; /* ← важно! */
+}
+
+/* 2. То же для контейнера поиска, если нужно */
+.search-container {
+    position: relative; /* уже есть */
+    overflow: visible; /* ← чтобы подсказки могли вылезать наружу */
+}
+
+/* 3. Подсказки — абсолютные и поверх всего */
+.autocomplete-suggestions {
+    position: absolute; /* учитывает .search-container */
     top: calc(100% + 4px);
     left: 0;
     right: 0;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 0 0 6px 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-height: 240px;
     overflow-y: auto;
     list-style: none;
     margin: 0;
     padding: 0;
-    display: none;        /* показываем через JS-класс .visible */
-    z-index: 999;         /* чтобы быть поверх header */
-  }
-  
-  /* 4. Класс для показа подсказок */
-  .autocomplete-suggestions.visible {
+    display: none; /* показываем через JS-класс .visible */
+    z-index: 999; /* чтобы быть поверх header */
+}
+
+/* 4. Класс для показа подсказок */
+.autocomplete-suggestions.visible {
     display: block;
-  }
-  .autocomplete-suggestions li {
+}
+
+.autocomplete-suggestions li {
     color: #000;
-  }
-  .add-to-cart {
+}
+
+.add-to-cart {
     background: #28a745;
     color: white;
     padding: 8px 15px;
@@ -678,12 +690,13 @@ header.site-header {
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.3s;
-  }
-  
-  .add-to-cart:hover {
+}
+
+.add-to-cart:hover {
     background: #218838;
-  }
-  .counter {
+}
+
+.counter {
     background: #ff4757;
     color: white;
     padding: 2px 6px;

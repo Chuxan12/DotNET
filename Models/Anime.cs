@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Headphones_Webstore.Models
+namespace AnimeSite.Models
 {
     public enum AnimeType
     {
@@ -23,14 +21,11 @@ namespace Headphones_Webstore.Models
 
     public class Anime
     {
-        [Key]
-        public int Id { get; set; }
+        [Key] public int Id { get; set; }
 
-        [Required, StringLength(200)]
-        public string Title { get; set; } = null!;
+        [Required, StringLength(200)] public string Title { get; set; } = null!;
 
-        [Range(0, 10)]
-        public double Rating { get; set; }
+        [Range(0, 10)] public double Rating { get; set; }
 
         public int Votes { get; set; } = 0;
 
@@ -41,8 +36,7 @@ namespace Headphones_Webstore.Models
         [Column(TypeName = "nvarchar(200)")]
         public string Genres { get; set; } = string.Empty;
 
-        [StringLength(100)]
-        public string? Studio { get; set; }
+        [StringLength(100)] public string? Studio { get; set; }
 
         public string? ImagePath { get; set; }
 
