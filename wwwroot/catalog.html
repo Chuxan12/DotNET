@@ -125,6 +125,191 @@
             border-radius: 4px;
             flex: none;
         }
+        /* ========= LAYOUT ========= */
+        /* ========= SIDEBAR / ФИЛЬТРЫ ========= */
+        .navbar {
+            width: 250px;             /* ⬆️ было 200px → стало 320px  */
+            flex-shrink: 0;           /* не уменьшаем при тесном экране */
+            padding: 30px;            /* ⬆️ чуть больше внутренний отступ */
+            background-color: #f4f4f4;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .filter-title {
+            font-size: 1.25rem;       /* крупнее заголовок */
+            margin-bottom: 10px;
+        }
+
+        .filter-group {
+            margin-bottom: 22px;      /* немного больше расстояния между группами */
+        }
+
+        /* ========= УЛУЧШЕННЫЕ ЭЛЕМЕНТЫ ВНУТРИ ПАНЕЛИ ========= */
+        .dropbtn {
+            width: 100%;              /* растягиваем на всю ширину панели */
+            padding: 12px 16px;       /* крупнее кликабельная зона */
+            font-size: 1rem;
+            text-align: left;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .dropdown-content a {
+            font-size: 0.95rem;       /* читаемость меню */
+            padding: 9px 14px;
+        }
+
+        .year-slider input {
+            width: 100%;
+        }
+
+        .rating-inputs {
+            display: flex;
+            gap: 6px;
+        }
+
+        .rating-inputs input {
+            width: 100%;
+            padding: 8px 6px;
+            font-size: 0.9rem;
+        }
+
+        .filter-button {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* ========= РЕЗУЛЬТАТЫ АНКЕТЫ ========= */
+        .anime-results {
+            flex: 1 1 0;              /* берём оставшееся пространство */
+            max-width: 1400px;        /* как и было раньше */
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* ==== СТИЛИ ПОЛЬЗОВАТЕЛЯ (НЕ МЕНЯЛИ) ==== */
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .star {
+            color: gold;
+            margin-right: 5px;
+        }
+
+        .score {
+            font-weight: bold;
+        }
+
+        .anime-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .anime-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .anime-table td {
+            padding: 10px;
+            vertical-align: top;
+            width: 20%;
+        }
+
+        .top100 {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .info-table td {
+            padding: 10px;
+            border: none;
+            text-align: left;
+            font-size: 1em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .activity {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 24px 0 0;
+        }
+
+        .page-btn {
+            min-width: 40px;
+            padding: 8px 12px;
+            font-size: 0.95rem;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .page-btn:hover {
+            background: #ffefef;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-btn.active {
+            background: #ff6b6b;
+            color: #fff;
+            border-color: #ff6b6b;
+            cursor: default;
+        }
+
     </style>
 </head>
 <body>

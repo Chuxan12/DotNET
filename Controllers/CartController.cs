@@ -24,7 +24,7 @@ namespace AnimeSite.Controllers
         {
             try
             {
-                _logger.LogInformation($"Добавление в корзину аниме {request.AnimeId}");
+                _logger.LogInformation($"Добавление в избранное аниме {request.AnimeId}");
                 var session = await GetOrCreateSessionAsync();
                 if (session == null)
                     return BadRequest("Не удалось получить сессию");
@@ -62,7 +62,7 @@ namespace AnimeSite.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при добавлении аниме в корзину");
+                _logger.LogError(ex, "Ошибка при добавлении аниме в избранное");
                 return StatusCode(500, new
                 {
                     error = "Внутренняя ошибка сервера",

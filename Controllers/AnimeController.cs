@@ -10,7 +10,7 @@ namespace AnimeSite.Controllers
     public class AnimeController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private const int PageSize = 8; // единый источник истины
+        private const int PageSize = 10; // единый источник истины
 
         public AnimeController(ApplicationDbContext context)
         {

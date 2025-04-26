@@ -31,7 +31,6 @@ namespace AnimeSite.Models
 
         public int Year { get; set; }
 
-        // Для простоты храним как CSV; при необходимости можно сделать отдельную сущность Genre
         [Required]
         [Column(TypeName = "nvarchar(200)")]
         public string Genres { get; set; } = string.Empty;

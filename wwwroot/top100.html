@@ -7,23 +7,39 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<header>
-    <div class="logo">АнимеСайт</div>
-    <div class="search-container">
-        <form id="searchForm" onsubmit="return handleSearch(event);">
-            <input type="text" class="search-input" placeholder="Найти аниме по названию..." id="searchInput" required>
-            <button type="submit" class="search-button">🔍</button>
-        </form>
-    </div>
-    <nav>
-        <ul>
-            <li><a href="index.html">Главная</a></li>
-            <li><a href="catalog.html">Каталог</a></li>
-            <li><a href="top100.html">Топ-100 аниме</a></li>
-            <li><a href="profile.html"><img src="img/avatar.jpg" alt="Аватар" class="avatar"></a></li>
-        </ul>
-    </nav>
-</header>
+    <header class="site-header">
+        <div class="logo">АнимеСайт</div>
+    
+        <div class="search-container" role="search">
+            <form id="searchForm" class="search-form" autocomplete="off" aria-label="Поиск аниме">
+                <input
+                        type="text"
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Найти аниме по названию..."
+                        aria-autocomplete="list"
+                        aria-controls="suggestions"
+                        aria-expanded="false"
+                />
+                <button type="submit" class="search-button" aria-label="Найти">🔍</button>
+            </form>
+            <ul id="suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Подсказки поиска"></ul>
+        </div>
+    
+        <nav class="main-nav" aria-label="Главное меню">
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="top100.html">Топ-100 аниме</a></li>
+                <a href="cart.html" aria-label="Избранное"> Избранное <span class="counter">0</span> </a>
+                <li>
+                    <a href="profile.html" aria-label="Профиль">
+                        <img src="img/avatar.jpg" alt="" class="avatar"/>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
 <main>
     <section class="top100">
@@ -145,9 +161,9 @@
     <div>
         <p>&copy; 2024 АнимеСайт.</p>
         <p>
-            <a href="https://t.me" style="color: white; text-decoration: none;">Наш канал в Telegram</a> |
-            <a href="about.html" style="color: white; text-decoration: none;">О нас</a> |
-            <a href="add-item.html" style="color: white; text-decoration: none;">Добавить аниме</a>
+            <a href="https://t.me" style="color: white; text-decoration: none">Наш канал в Telegram</a> |
+            <a href="about.html" style="color: white; text-decoration: none">О нас</a> |
+            <a href="add-item.html" style="color: white; text-decoration: none">Добавить аниме</a>
         </p>
     </div>
 </footer>
